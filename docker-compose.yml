@@ -4,6 +4,7 @@ services:
     image: hskrk/telegram_phabricator:latest
     secrets:
       - telegram_token
+      - phabricator_token
     command:
       - /bin/sh
       - -c
