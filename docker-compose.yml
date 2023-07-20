@@ -7,7 +7,7 @@ services:
     command:
       - /bin/sh
       - -c
-      - export TELEGRAM_TOKEN=$$(cat /run/secrets/telegram_token) && export PHABRICATOR_TOKEN=$$(cat /run/secrets/phabri_token) && python3 main.py
+      - export TELEGRAM_TOKEN=$$(cat /run/secrets/telegram_token) && export PHABRICATOR_TOKEN=$$(cat /run/secrets/phabricator_token) && python3 main.py
     environment:
       - PHABRICATOR_URL=${PHABRICATOR_URL}
       - PHABRICATOR_URL_API=${PHABRICATOR_URL_API}
@@ -21,5 +21,5 @@ services:
 secrets:
   telegram_token:
     external: true
-  phabri_token:
+  phabricator_token:
     external: true
