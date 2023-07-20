@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  task_creator:
+    image: hskrk/telegram_phabricator:latest
+    secrets:
+      - telegram_token
+    command:
+      - /bin/sh
+      - -c
+      - export
+      - TELEGRAM_TOKEN=$(cat /run/secrets/telegram_token)
+      - export
+      - PHABRICATOR_TOKEN=$(cat /run/secrets/phabri_token)
+      - |
+        python3 /app/main.py
+    environment:
+      - PHABRICATOR_URL=${PHABRICATOR_URL}
+      - PHABRICATOR_URL_API=${PHABRICATOR_URL_API}
+      - TELEGRAM_CHAT_NAME=${TELEGRAM_CHAT_NAME}
+
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+secrets:
+  telegram_token:
+    external: true
+  phabri_token:
+    external: true
