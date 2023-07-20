@@ -8,9 +8,9 @@ services:
       - /bin/sh
       - -c
       - export
-      - TELEGRAM_TOKEN=$(cat /run/secrets/telegram_token)
+      - TELEGRAM_TOKEN=$$(cat /run/secrets/telegram_token)
       - export
-      - PHABRICATOR_TOKEN=$(cat /run/secrets/phabri_token)
+      - PHABRICATOR_TOKEN=$$(cat /run/secrets/phabri_token)
       - |
         python3 /app/main.py
     environment:
