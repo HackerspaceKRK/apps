@@ -23,6 +23,9 @@ services:
   tele_notifier:
     image: ghcr.io/hbrylkowski/phabricatortelenotifier:master
     restart: unless-stopped
+    secrets:
+      - source: phabricator-tele-notifier.yaml
+        target: /run/secrets/config.yaml
 
 secrets:
   telegram_token:
