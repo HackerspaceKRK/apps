@@ -13,14 +13,21 @@ services:
       - PHABRICATOR_URL=${PHABRICATOR_URL}
       - PHABRICATOR_URL_API=${PHABRICATOR_URL_API}
       - TELEGRAM_CHAT_NAME=${TELEGRAM_CHAT_NAME}
+    restart: unless-stopped
 
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
 
+  tele_notifier:
+    image: ghcr.io/hbrylkowski/phabricatortelenotifier:master
+    restart: unless-stopped
+
 secrets:
   telegram_token:
     external: true
   phabricator_token:
+    external: true
+  phabricator-tele-notifier.yaml:
     external: true
