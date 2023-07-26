@@ -14,15 +14,20 @@ services:
       - PHABRICATOR_URL_API=${PHABRICATOR_URL_API}
       - TELEGRAM_CHAT_NAME=${TELEGRAM_CHAT_NAME}
     restart: unless-stopped
-
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
+        max_attempts: 5
 
   tele_notifier:
     image: ghcr.io/hbrylkowski/phabricatortelenotifier:master
     restart: unless-stopped
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
     secrets:
       - source: phabricator-tele-notifier.yaml
         target: /run/secrets/config.yaml
@@ -34,3 +39,8 @@ secrets:
     external: true
   phabricator-tele-notifier.yaml:
     external: true
+
+configs:
+    phabricator-tele-notifier.yaml:
+        external: true
+

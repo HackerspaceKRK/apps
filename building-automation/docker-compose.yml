@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  nodered:
+    image: nodered/node-red:latest
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./nodered_data/:/data
