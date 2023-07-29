@@ -72,7 +72,7 @@ services:
       - authentik
     labels:
       - "traefik.enable=true"
-      - "traefik.port=9000"
+      - "traefik.http.services.authentik-proxy.loadbalancer.server.port=9000"
       - "traefik.http.routers.authentik-proxy.rule=Host(`whoami.apps.hskrk.pl`) && PathPrefix(`/outpost.goauthentik.io/`)"
       - "traefik.http.middlewares.authentik.forwardauth.address=http://authentik-proxy:9000/outpost.goauthentik.io/auth/traefik"
       - "traefik.http.middlewares.authentik.forwardauth.trustForwardHeader=true"
