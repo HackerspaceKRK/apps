@@ -11,7 +11,6 @@ services:
       - "8080:8080"
     depends_on:
       - server
-      - whoami
     command:
       - "--api"
       - "--providers.docker=true"
@@ -34,7 +33,6 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - worker
       - postgresql
       - redis
     labels:
@@ -45,7 +43,7 @@ services:
       - authentik_token
 
   worker:
-    image: ghcr.io/goauthentik/server:2022.7.3
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.6.1}
     command: worker
     environment:
       AUTHENTIK_REDIS__HOST: redis
