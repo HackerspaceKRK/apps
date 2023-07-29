@@ -35,10 +35,11 @@ services:
     depends_on:
       - postgresql
       - redis
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.authentik.loadbalancer.server.port=9000"
-      - "traefik.http.routers.authentik.rule=Host(`auth.apps.hskrk.pl`)"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.authentik.loadbalancer.server.port=9000"
+        - "traefik.http.routers.authentik.rule=Host(`auth.apps.hskrk.pl`)"
     secrets:
       - authentik_token
 
