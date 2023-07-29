@@ -10,7 +10,7 @@ services:
       - "8000:8000"
       - "8080:8080"
     depends_on:
-      - server
+      - authentik
     command:
       - "--api"
       - "--providers.docker=true"
@@ -18,7 +18,7 @@ services:
       - "--entrypoints.web.address=:8000"
       - "--api.insecure=true"
 
-  server:
+  authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.6.1}
     command: server
     environment:
@@ -63,13 +63,13 @@ services:
     ports:
       - "9091:9000"
     environment:
-      - AUTHENTIK_HOST=http://server:9000
+      - AUTHENTIK_HOST=http://authentik:9000
       - AUTHENTIK_INSECURE=true
       - AUTHENTIK_TOKEN=file:///run/secrets/authentik_token
       - AUTHENTIK_HOST_BROWSER=http://auth.apps.hskrk.pl
       - AUTHENTIK_DEBUG=true
     depends_on:
-      - server
+      - authentik
     labels:
       - "traefik.enable=true"
       - "traefik.port=9000"
