@@ -18,6 +18,7 @@ services:
       - "--entrypoints.web.address=:8000"
       - "--api.insecure=true"
       - "--providers.docker.swarmMode=true"
+
   authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.6.1}
     command: server
@@ -38,6 +39,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
+        - "traefik.docker.network=system_defaultĻ"
         - "traefik.http.services.authentik.loadbalancer.server.port=9000"
         - "traefik.http.routers.authentik.rule=Host(`auth.apps.hskrk.pl`)"
     secrets:
