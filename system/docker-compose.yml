@@ -53,9 +53,12 @@ services:
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
       AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS:-pass}
+      AUTHENTIK_SECRET_KEY: file:///run/secrets/authentik_token
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    secrets:
+      - authentik_token
 
   authentik-proxy:
     image: ghcr.io/goauthentik/proxy
