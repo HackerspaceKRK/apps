@@ -38,7 +38,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.port=9000"
-      - "traefik.http.routers.server.rule=Host(`auth.apps.hskrk.pl`)"
+      - "traefik.http.routers.authentik_server.rule=Host(`auth.apps.hskrk.pl`)"
     secrets:
       - authentik_token
 
