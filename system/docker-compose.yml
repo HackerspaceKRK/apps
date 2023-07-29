@@ -37,7 +37,6 @@ services:
       - redis
     labels:
       - "traefik.enable=true"
-      - "traefik.port=80"
       - "traefik.http.services.authentik.loadbalancer.server.port=9000"
       - "traefik.http.routers.authentik.rule=Host(`auth.apps.hskrk.pl`)"
     secrets:
