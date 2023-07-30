@@ -12,9 +12,9 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=building-automation_default"
         - "traefik.port=80"
-        - "traefik.http.services.whoami.loadbalancer.server.port=1880"
-        - "traefik.http.routers.whoami.rule=Host(`nodered.apps.hskrk.pl`)"
-        - "traefik.http.routers.whoami.middlewares=authentik@docker"
+        - "traefik.http.services.nodered.loadbalancer.server.port=1880"
+        - "traefik.http.routers.nodered.rule=Host(`nodered.apps.hskrk.pl`)"
+        - "traefik.http.routers.nodered.middlewares=authentik@docker"
     volumes:
       - nodered_data:/data
 
