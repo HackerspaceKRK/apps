@@ -94,6 +94,7 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
         - "traefik.port=80"
+        - "traefik.http.services.whoami.loadbalancer.server.port=80"
         - "traefik.http.routers.whoami.rule=Host(`whoami.apps.hskrk.pl`)"
         - "traefik.http.routers.whoami.middlewares=authentik@docker"
 
