@@ -8,8 +8,13 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 5
-    ports:
-      - "1880:1880"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=building-automation_default"
+        - "traefik.port=80"
+        - "traefik.http.services.whoami.loadbalancer.server.port=1880"
+        - "traefik.http.routers.whoami.rule=Host(`nodered.apps.hskrk.pl`)"
+        - "traefik.http.routers.whoami.middlewares=authentik@docker"
     volumes:
       - nodered_data:/data
 
