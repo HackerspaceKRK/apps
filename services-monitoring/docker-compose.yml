@@ -58,7 +58,6 @@ services:
        - /:/hostfs:ro
 
 volumes:
-  nodered_data:
   grafana_data:
   influxdb_data:
   loki_data:
