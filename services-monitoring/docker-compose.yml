@@ -4,6 +4,8 @@ services:
     image: grafana/grafana
     restart: always
     user: "1000"
+    networks:
+      - system_default
     volumes:
        - grafana_data:/var/lib/grafana/
        - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
@@ -61,3 +63,8 @@ volumes:
   grafana_data:
   influxdb_data:
   loki_data:
+
+networks:
+  system_default:
+    external: true
+
