@@ -158,6 +158,9 @@ services:
     command:
       - backup
       - /data
+      - \&&
+      - wget
+      - ${HEALTHCHECKS_URL}
     deploy:
       mode: replicated
       replicas: 0
