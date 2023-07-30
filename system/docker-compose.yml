@@ -144,6 +144,30 @@ services:
         constraints:
           - node.role == manager
 
+  restic-backup:
+    image: restic/restic:latest
+    secrets:
+       - restic_password
+       - source: backblaze_credentials
+         target: /root/.aws/credentials
+    environment:
+      - RESTIC_REPOSITORY=${RESTIC_REPOSITORY}
+      - RESTIC_PASSWORD_FILE=/run/secrets/restic_password
+    volumes:
+      - /var/lib/docker/volumes/:/data
+    command:
+      - backup
+      - /data
+    deploy:
+      mode: replicated
+      replicas: 0
+      labels:
+        - "swarm.cronjob.enable=true"
+        - "swarm.cronjob.schedule=0 16 * * *"
+        - "swarm.cronjob.skip-running=false"
+      restart_policy:
+        condition: none
+
 volumes:
   database:
 
@@ -151,4 +175,6 @@ secrets:
   pg_pass:
     external: true
   authentik_token:
+    external: true
+  restic_password:
     external: true
