@@ -19,6 +19,14 @@ services:
       - "--api.insecure=true"
       - "--providers.docker.swarmMode=true"
       - "--entryPoints.web.forwardedHeaders.trustedIPs=10.0.0.0/16"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.port=80"
+        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.apps.hskrk.pl`)"
+        - "traefik.http.routers.traefik.middlewares=authentik@docker"
 
   authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.6.1}
