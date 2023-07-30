@@ -178,3 +178,5 @@ secrets:
     external: true
   restic_password:
     external: true
+  backblaze_credentials:
+    external: true
