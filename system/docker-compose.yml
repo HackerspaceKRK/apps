@@ -18,6 +18,7 @@ services:
       - "--entrypoints.web.address=:8000"
       - "--api.insecure=true"
       - "--providers.docker.swarmMode=true"
+      - "--entryPoints.web.forwardedHeaders.trustedIPs=10.0.0.0/16"
 
   authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.6.1}
