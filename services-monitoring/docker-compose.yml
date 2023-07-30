@@ -1,0 +1,63 @@
+version: "3.3"
+services:
+  grafana:
+    image: grafana/grafana
+    restart: always
+    user: "1000"
+    volumes:
+       - grafana_data:/var/lib/grafana/
+       - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.apps.hskrk.pl`)"
+        - "traefik.http.routers.grafana.middlewares=authentik@docker"
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - "8086:8086"
+      - "8083:8083"
+    volumes:
+       - influxdb_data:/var/lib/influxdb
+    restart: always
+  loki:
+    image: grafana/loki:2.6.1
+    restart: always
+    user: "1000"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki/config/config.yml:/etc/loki/local-config.yaml
+      - loki_data/:/data/
+
+  promtail:
+    image: grafana/promtail:2.6.1
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log
+      - ./promtail/config/config.yml:/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/config.yml
+    ports:
+      - "1514:1514"
+
+  telegraf:
+    image: telegraf
+    restart: unless-stopped
+    user: "1000:999"
+    environment:
+      - HOST_ETC=/hostfs/etc
+      - HOST_PROC=/hostfs/proc
+      - HOST_SYS=/hostfs/sys
+      - HOST_VAR=/hostfs/var
+      - HOST_RUN=/hostfs/run
+      - HOST_MOUNT_PREFIX=/hostfs
+    volumes:
+       - ./telegraf:/etc/telegraf/
+       - /var/run/docker.sock:/var/run/docker.sock:ro
+       - /:/hostfs:ro
+
+volumes:
+  nodered_data:
+  grafana_data:
+  influxdb_data:
