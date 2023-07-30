@@ -69,7 +69,7 @@ services:
       - AUTHENTIK_HOST=http://authentik:9000
       - AUTHENTIK_INSECURE=true
       - AUTHENTIK_TOKEN=file:///run/secrets/authentik_token
-      - AUTHENTIK_HOST_BROWSER=http://auth.apps.hskrk.pl
+      - AUTHENTIK_HOST_BROWSER=https://auth.apps.hskrk.pl
       - AUTHENTIK_DEBUG=true
     depends_on:
       - authentik
