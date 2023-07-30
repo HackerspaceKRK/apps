@@ -3,6 +3,8 @@ services:
   nodered:
     image: nodered/node-red:latest
     restart: unless-stopped
+    networks:
+      - system_default
     deploy:
       replicas: 1
       restart_policy:
@@ -10,7 +12,7 @@ services:
         max_attempts: 5
       labels:
         - "traefik.enable=true"
-        - "traefik.docker.network=building-automation_default"
+        - "traefik.docker.network=system_default"
         - "traefik.port=80"
         - "traefik.http.services.nodered.loadbalancer.server.port=1880"
         - "traefik.http.routers.nodered.rule=Host(`nodered.apps.hskrk.pl`)"
