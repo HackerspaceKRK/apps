@@ -9,6 +9,7 @@ services:
     volumes:
        - grafana_data:/var/lib/grafana/
        - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
+       - ./grafana/config/authentik.pem:/etc/grafana/authentik.pem
     deploy:
       labels:
         - "traefik.enable=true"
