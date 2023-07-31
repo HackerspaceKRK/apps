@@ -158,7 +158,7 @@ services:
     command:
       - backup
       - /data
-      - \&&
+      - "&&"
       - wget
       - ${HEALTHCHECKS_URL}
     deploy:
