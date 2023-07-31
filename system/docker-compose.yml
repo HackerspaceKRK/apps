@@ -153,14 +153,11 @@ services:
     environment:
       - RESTIC_REPOSITORY=${RESTIC_REPOSITORY}
       - RESTIC_PASSWORD_FILE=/run/secrets/restic_password
+      - HEALTHCHECKS_URL=${HEALTHCHECKS_URL}
     volumes:
       - /var/lib/docker/volumes/:/data
-    command:
-      - backup
-      - /data
-      - "&&"
-      - wget
-      - ${HEALTHCHECKS_URL}
+      - ./backup-script.sh:/backup-script.sh
+    entrypoint: /backup-script.sh
     deploy:
       mode: replicated
       replicas: 0
