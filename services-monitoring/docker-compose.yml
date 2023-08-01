@@ -7,7 +7,7 @@ services:
     networks:
       - system_default
     secrets:
-      - authentik_key.pem
+      - authentik_jwk.json
     volumes:
        - grafana_data:/var/lib/grafana/
        - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
