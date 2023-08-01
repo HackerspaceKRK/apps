@@ -41,6 +41,8 @@ services:
     volumes:
        - influxdb_data:/var/lib/influxdb
     restart: always
+    networks:
+      - services-monitoring_default
   loki:
     image: grafana/loki:2.6.1
     restart: always
