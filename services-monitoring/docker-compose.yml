@@ -67,6 +67,8 @@ services:
 secrets:
   authentik_key.pem:
     external: true
+  authentik_jwk.json:
+    external: true
 
 volumes:
   grafana_data:
