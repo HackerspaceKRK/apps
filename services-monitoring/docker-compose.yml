@@ -6,7 +6,7 @@ services:
     user: "1000"
     networks:
       - system_default
-      - monitoring_default
+      - services-monitoring_default
     secrets:
       - authentik_jwk.json
     volumes:
