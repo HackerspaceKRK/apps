@@ -33,16 +33,7 @@ services:
         - "traefik.docker.network=system_default"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
         - "traefik.http.routers.grafana.rule=Host(`grafana.apps.hskrk.pl`)"
-  influxdb:
-    image: influxdb:1.8
-    ports:
-      - "8086:8086"
-      - "8083:8083"
-    volumes:
-       - influxdb_data:/var/lib/influxdb
-    restart: always
-    networks:
-      - services-monitoring_default
+
   loki:
     image: grafana/loki:2.6.1
     networks:
@@ -53,6 +44,38 @@ services:
     volumes:
       - ./loki/config/config.yml:/etc/loki/local-config.yaml
       - loki_data:/data/
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - services-monitoring_default
+    restart: always
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    networks:
+      - services-monitoring_default
+    restart: always
+    deploy:
+      mode: global
 
   promtail:
     image: grafana/promtail:2.6.1
@@ -66,23 +89,6 @@ services:
     ports:
       - "1514:1514"
 
-  telegraf:
-    image: telegraf
-    restart: unless-stopped
-    networks:
-      - services-monitoring_default
-    user: "1000:999"
-    environment:
-      - HOST_ETC=/hostfs/etc
-      - HOST_PROC=/hostfs/proc
-      - HOST_SYS=/hostfs/sys
-      - HOST_VAR=/hostfs/var
-      - HOST_RUN=/hostfs/run
-      - HOST_MOUNT_PREFIX=/hostfs
-    volumes:
-       - ./telegraf:/etc/telegraf/
-       - /var/run/docker.sock:/var/run/docker.sock:ro
-       - /:/hostfs:ro
 
 secrets:
   authentik_key.pem:
@@ -94,6 +100,8 @@ volumes:
   grafana_data:
   influxdb_data:
   loki_data:
+  prometheus_data:
+
 
 networks:
   system_default:
