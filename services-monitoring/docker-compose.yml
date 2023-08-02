@@ -90,6 +90,11 @@ services:
     deploy:
       mode: global
 
+  snmp-exporter:
+    image: quay.io/prometheus/snmp-exporter
+    restart: always
+    networks:
+      - services-monitoring_default
   promtail:
     image: grafana/promtail:2.6.1
     networks:
