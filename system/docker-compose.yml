@@ -7,7 +7,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "8000:8000"
+      - "80:80"
+      - "443:443"
       - "8080:8080"
     depends_on:
       - authentik
@@ -15,7 +16,7 @@ services:
       - "--api"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--entrypoints.web.address=:8000"
+      - "--entrypoints.web.address=:80"
       - "--api.insecure=true"
       - "--providers.docker.swarmMode=true"
       - "--entryPoints.web.forwardedHeaders.trustedIPs=10.0.0.0/16"
