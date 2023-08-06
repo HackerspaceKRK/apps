@@ -13,10 +13,11 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
-        - "traefik.port=80"
         - "traefik.http.services.nodered.loadbalancer.server.port=1880"
         - "traefik.http.routers.nodered.rule=Host(`nodered.apps.hskrk.pl`)"
         - "traefik.http.routers.nodered.middlewares=authentik@docker"
+        - "traefik.http.routers.nodered.tls=true"
+        - "traefik.http.routers.nodered.tls.certresolver=myresolver"
     volumes:
       - nodered_data:/data
 

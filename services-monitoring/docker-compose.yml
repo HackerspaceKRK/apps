@@ -33,6 +33,8 @@ services:
         - "traefik.docker.network=system_default"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000"
         - "traefik.http.routers.grafana.rule=Host(`grafana.apps.hskrk.pl`)"
+        - "traefik.http.routers.grafana.tls=true"
+        - "traefik.http.routers.grafana.tls.certresolver=myresolver"
 
   loki:
     image: grafana/loki:2.6.1
