@@ -63,10 +63,10 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
-        - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
         - "traefik.http.routers.prometheus.rule=Host(`prometheus.apps.hskrk.pl`)"
         - "traefik.http.routers.prometheus.tls=true"
         - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
+        - "traefik.http.routers.prometheus.middlewares=authentik@docker"
 
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
@@ -113,6 +113,8 @@ services:
         - "traefik.http.routers.snmp-exporter.rule=Host(`snmp-exporter.apps.hskrk.pl`)"
         - "traefik.http.routers.snmp-exporter.tls=true"
         - "traefik.http.routers.snmp-exporter.tls.certresolver=myresolver"
+        - "traefik.http.routers.snmp-exporter.middlewares=authentik@docker"
+
 
   promtail:
     image: grafana/promtail:2.6.1
