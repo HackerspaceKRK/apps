@@ -63,6 +63,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
+        - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
         - "traefik.http.routers.prometheus.rule=Host(`prometheus.apps.hskrk.pl`)"
         - "traefik.http.routers.prometheus.tls=true"
         - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
