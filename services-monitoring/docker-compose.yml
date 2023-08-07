@@ -97,6 +97,15 @@ services:
     restart: always
     networks:
       - services-monitoring_default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.snmp-exporter.loadbalancer.server.port=9116"
+        - "traefik.http.routers.snmp-exporter.rule=Host(`snmp-exporter.apps.hskrk.pl`)"
+        - "traefik.http.routers.snmp-exporter.tls=true"
+        - "traefik.http.routers.snmp-exporter.tls.certresolver=myresolver"
+
   promtail:
     image: grafana/promtail:2.6.1
     networks:

@@ -56,7 +56,7 @@ scrape_configs:
   - job_name: 'snmp'
     static_configs:
       - targets:
-        - 10.12.4.1
+        - 10.12.5.2
     metrics_path: /snmp
     params:
       auth: [public_v2]
