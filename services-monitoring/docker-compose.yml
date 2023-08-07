@@ -58,6 +58,7 @@ services:
       - '--web.console.templates=/usr/share/prometheus/consoles'
     networks:
       - services-monitoring_default
+      - system_default
     restart: always
     deploy:
       labels:
@@ -106,6 +107,7 @@ services:
     restart: always
     networks:
       - services-monitoring_default
+      - system_default
     deploy:
       labels:
         - "traefik.enable=true"
