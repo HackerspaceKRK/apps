@@ -1,0 +1,6 @@
+USE phabricator;
+
+SELECT CONCAT('DROP DATABASE `',schema_name,'` ;') AS `-- stmt`
+  FROM information_schema.schemata
+ WHERE schema_name LIKE 'phabricator\_%' ESCAPE '\\' OR schema_name = 'phabricator'
+ ORDER BY schema_name;

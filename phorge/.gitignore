@@ -1,0 +1,5 @@
+.env
+database-volume
+database-volume*
+*.sql.gz
+*.sql

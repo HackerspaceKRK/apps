@@ -1,0 +1,169 @@
+#!/bin/bash
+
+set -e
+
+USAGE=$(cat <<EOF
+Usage: $0 [OPTIONS] SUBCOMMAND [SUBCOMMAND OPTIONS]
+
+OPTIONS:
+  -h, --help
+    Show this help message and exit.
+
+SUBCOMMANDS:
+  up
+    Start all services. Alias for 'docker compose up -d --build --wait --wait-timeout 120'.
+  db-dump-restore BACKUP_FILE
+    Restore MySQL a backup from a dump file.
+    Needs and .sql file as argument.
+    THIS WILL OVERWRITE THE CURRENT DATABASE.
+  db-repl [ARGUMENTS...]
+    Start a MySQL REPL in the databse container.
+  phorge-enter
+    Enter the Phorge container with bash.
+  recover USERNAME
+    Generate a one-time login link for the given username.
+
+NOTES: 
+  - This script requires 'pv' to be installed.
+  - This script requires 'docker compose' to be installed.
+
+EOF
+)
+
+# Load .env file
+if [ -f .env ]
+then
+    export $(cat .env | sed 's/#.*//g' | xargs)
+fi
+
+COLOR_RED='\033[0;31m'
+COLOR_GREEN='\033[0;32m'
+COLOR_BLUE='\033[0;34m'
+COLOR_RESET='\033[0m'
+
+DOCKER_COMPOSE="docker compose"
+
+PHORGE_SERVICE="phorge"
+MYSQL_SERVICE="phorge-mysql"
+
+
+
+function db_dump_restore() {
+    # check if pv and $DOCKER_COMPOSE are installed
+    if ! command -v pv &> /dev/null
+    then
+        echo "'pv' could not be found"
+        exit 1
+    fi
+
+    if ! command -v $DOCKER_COMPOSE &> /dev/null
+    then
+        echo "'$DOCKER_COMPOSE' could not be found"
+        exit 1
+    fi
+
+    if [ -z "$1" ]
+    then
+        echo "Please provide a dump file"
+        exit 1
+    fi
+
+    if [ ! -f "$1" ]
+    then
+        echo "File $1 does not exist"
+        exit 1
+    fi
+
+    DB_FILE=$1
+
+    echo -e "${COLOR_BLUE}Stopping Phorge container${COLOR_RESET}"
+    $DOCKER_COMPOSE stop $PHORGE_SERVICE
+    echo -e "${COLOR_GREEN}Stopped Phorge container${COLOR_RESET}"
+
+    echo -e "${COLOR_BLUE}Ensuring MySQL container is running${COLOR_RESET}"
+    $DOCKER_COMPOSE up -d $MYSQL_SERVICE --wait --wait-timeout 120
+    echo  -e "${COLOR_GREEN}MySQL container is running${COLOR_RESET}"
+
+    echo -e "${COLOR_BLUE}Dropping databases starting with 'phabricator_' and 'phabricator' itself.${COLOR_RESET}"
+   
+    $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD < gen_drop_phabri.sql_script | \
+        $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD
+    echo -e "${COLOR_GREEN}Dropped database${COLOR_RESET}"
+
+    echo -e "${COLOR_BLUE}Restoring database from $DB_FILE${COLOR_RESET}"
+    pv $DB_FILE | $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD
+
+    echo -e "${COLOR_BLUE}Restarting Phorge container${COLOR_RESET}"
+    $DOCKER_COMPOSE up --build -d $PHORGE_SERVICE
+    
+}
+
+function db_repl() {
+    echo -e "${COLOR_BLUE}Ensuring MySQL container is running${COLOR_RESET}"
+    $DOCKER_COMPOSE up -d $MYSQL_SERVICE --wait --wait-timeout 120
+    echo  -e "${COLOR_GREEN}MySQL container is running${COLOR_RESET}"
+    echo $@
+    $DOCKER_COMPOSE exec $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD $@
+}
+
+function up() {
+    $DOCKER_COMPOSE up -d --build --wait --wait-timeout 120
+}
+
+function recover() {
+    if [ -z "$1" ]
+    then
+        echo "Please provide a username"
+        exit 1
+    fi
+
+    USERNAME=$1
+
+    $DOCKER_COMPOSE exec $PHORGE_SERVICE bash -c "/var/www/phorge/phorge/bin/auth recover $USERNAME"
+}
+
+if [ -z "$1" ]
+then
+    echo "$USAGE"
+    exit 1
+fi
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        db-dump-restore)
+            shift
+            db_dump_restore $@
+            exit 0
+            ;;
+        db-repl)
+            shift
+            db_repl $@
+            exit 0
+            ;;
+        phorge-enter)
+            shift
+            $DOCKER_COMPOSE exec $PHORGE_SERVICE bash
+            exit 0
+            ;;
+        up)
+            shift
+            up
+            exit 0
+            ;;
+        recover)
+            shift
+            recover $@
+            exit 0
+            ;;
+        *)
+            echo "Unknown command $1"
+            echo "$USAGE"
+            exit 1
+            ;;
+    esac
+done
