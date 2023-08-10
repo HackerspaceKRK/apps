@@ -9,7 +9,7 @@ services:
       - system_default
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - traefik_certificates:/traefik/acmeŻ
+      - traefik_certificates:/traefik/acme
     ports:
       - "80:80"
       - "443:443"
