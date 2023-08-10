@@ -5,10 +5,15 @@ services:
     image: traefik:v2.8
     container_name: traefik
     networks:
-      - outside
+      - traefik-net
+      - system_default
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik_certificates:/certificates
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
     depends_on:
       - authentik
     command:
@@ -177,9 +182,10 @@ volumes:
   traefik_certificates:
 
 networks:
-  outside:
-    external:
-      name: "host"
+  traefik-net:
+    attachable: true
+  system_default:
+    external: true
 
 secrets:
   pg_pass:
