@@ -10,6 +10,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik_certificates:/traefik/acme
+      - traefik_letsencrypt:/letsencrypt"
     ports:
       - "80:80"
       - "443:443"
@@ -181,6 +182,7 @@ services:
 volumes:
   database:
   traefik_certificates:
+  traefik_letsencrypt:
 
 networks:
   traefik:
