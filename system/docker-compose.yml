@@ -182,8 +182,8 @@ volumes:
 
 networks:
   outside:
-    external:
-      name: "host"
+    external: true
+    name: "host"
 
 secrets:
   pg_pass:
