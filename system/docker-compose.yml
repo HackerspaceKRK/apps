@@ -186,6 +186,7 @@ networks:
     attachable: true
   system_default:
     external: true
+    attachable: true
 
 secrets:
   pg_pass:
