@@ -9,10 +9,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik_certificates:/certificates
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
     depends_on:
       - authentik
     command:
@@ -182,8 +178,8 @@ volumes:
 
 networks:
   outside:
-    external: true
-    name: "host"
+    external:
+      name: "host"
 
 secrets:
   pg_pass:
