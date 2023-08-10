@@ -4,6 +4,7 @@ services:
   traefik:
     image: traefik:v2.8
     container_name: traefik
+    network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik_certificates:/certificates
