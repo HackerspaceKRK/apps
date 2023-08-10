@@ -9,7 +9,7 @@ services:
       - system_default
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - traefik_certificates:/certificates
+      - traefik_certificates:/traefik/acmeŻ
     ports:
       - "80:80"
       - "443:443"
@@ -26,6 +26,7 @@ services:
       - "--providers.docker.swarmMode=true"
       - "--entryPoints.web.forwardedHeaders.trustedIPs=10.0.0.0/16"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.storage=/traefik/acme/acme.json"
     deploy:
       labels:
         - "traefik.enable=true"
