@@ -4,7 +4,8 @@ services:
   traefik:
     image: traefik:v2.8
     container_name: traefik
-    network_mode: host
+    networks:
+      - outside
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - traefik_certificates:/certificates
@@ -178,6 +179,11 @@ services:
 volumes:
   database:
   traefik_certificates:
+
+networks:
+  outside:
+    external:
+      name: "host"
 
 secrets:
   pg_pass:
