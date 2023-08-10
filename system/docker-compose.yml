@@ -5,7 +5,7 @@ services:
     image: traefik:v2.8
     container_name: traefik
     networks:
-      - traefik-net
+      - traefik
       - system_default
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -182,9 +182,8 @@ volumes:
   traefik_certificates:
 
 networks:
-  traefik-net:
+  traefik:
     attachable: true
-    external: true
   system_default:
     external: true
 
