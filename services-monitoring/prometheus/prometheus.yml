@@ -53,7 +53,7 @@ scrape_configs:
       - targets: ['node-exporter:9100']
         labels:
           device: apps
-      - targets: ['10.12.10.225']
+      - targets: ['10.12.10.225:9100']
         labels:
           device: cankarp
 
