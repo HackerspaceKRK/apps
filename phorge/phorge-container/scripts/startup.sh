@@ -20,6 +20,19 @@ fi
 /var/www/phorge/phorge/bin/config set mysql.host $MYSQL_HOST
 /var/www/phorge/phorge/bin/config set mysql.port $MYSQL_PORT
 /var/www/phorge/phorge/bin/config set mysql.user $MYSQL_USER
+
+# if MYSQL_PASSWORD is empty, use check MYSQL_PASSWORD_FILE
+if [ -z "$MYSQL_PASSWORD" ]
+then
+    if [ -z "$MYSQL_PASSWORD_FILE" ]
+    then
+        echo "MYSQL_PASSWORD or MYSQL_PASSWORD_FILE must be set"
+        exit 1
+    else
+        MYSQL_PASSWORD=$(cat $MYSQL_PASSWORD_FILE)
+    fi
+fi
+
 /var/www/phorge/phorge/bin/config set mysql.pass $MYSQL_PASSWORD
 /var/www/phorge/phorge/bin/config set diffusion.allow-http-auth true
 

@@ -42,6 +42,7 @@ COLOR_BLUE='\033[0;34m'
 COLOR_RESET='\033[0m'
 
 DOCKER_COMPOSE="docker compose"
+DOCKER="docker"
 
 PHORGE_SERVICE="phorge"
 MYSQL_SERVICE="phorge-mysql"
@@ -107,6 +108,12 @@ function db_repl() {
 }
 
 function up() {
+    # check if phorge_mysql_password secret exists
+    if [[ -z "$($DOCKER secret ls | grep phorge_mysql_password)" ]]
+    then
+        echo "phorge_mysql_password secret does not exist. Creating..."
+        dd if=/dev/urandom bs=1 count=32 status=none | base64 | $DOCKER secret create phorge_mysql_password -
+    fi
     $DOCKER_COMPOSE up -d --build --wait --wait-timeout 120
 }
 
