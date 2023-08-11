@@ -24,24 +24,24 @@ ingester:
 schema_config:
   configs:
     - from: 2020-10-24
-      store: boltdb-shipper
+      store: tsdb
       object_store: filesystem
-      schema: v11
+      schema: v12
       index:
         prefix: index_
         period: 24h
 
 storage_config:
-  boltdb_shipper:
-    active_index_directory: /data/loki/boltdb-shipper-active
-    cache_location: /data/loki/boltdb-shipper-cache
+  tsdb_shipper:
+    active_index_directory: /data/tsdb-index
+    cache_location: /data/tsdb-cache
     cache_ttl: 24h # Can be increased for faster performance over longer query periods, uses more disk space
     shared_store: filesystem
   filesystem:
     directory: /data/chunks
 
 compactor:
-  working_directory: /data/loki/boltdb-shipper-compactor
+  working_directory: /data/retention
   shared_store: filesystem
 
 limits_config:
