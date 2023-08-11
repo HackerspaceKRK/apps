@@ -1,9 +1,7 @@
 version: '3'
 services:
   phorge:
-    build:
-      context: phorge-container
-      dockerfile: Dockerfile
+    image: 
     restart: unless-stopped
     ports:
       - "8030:80"

@@ -95,7 +95,7 @@ function db_dump_restore() {
     pv $DB_FILE | $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD
 
     echo -e "${COLOR_BLUE}Restarting Phorge container${COLOR_RESET}"
-    $DOCKER_COMPOSE up --build -d $PHORGE_SERVICE
+    docker stack deploy -c docker-compose.yml phorge --with-registry-auth
     
 }
 
@@ -114,7 +114,7 @@ function up() {
         echo "phorge_mysql_password secret does not exist. Creating..."
         dd if=/dev/urandom bs=1 count=32 status=none | base64 | $DOCKER secret create phorge_mysql_password -
     fi
-    $DOCKER_COMPOSE up -d --build --wait --wait-timeout 120
+    docker stack deploy -c docker-compose.yml phorge --with-registry-auth
 }
 
 function recover() {
