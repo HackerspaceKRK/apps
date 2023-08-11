@@ -51,7 +51,11 @@ scrape_configs:
 
     static_configs:
       - targets: ['node-exporter:9100']
-
+        labels:
+          device: apps
+      - targets: ['10.12.10.225:9100']
+        labels:
+          device: cankarp
 
   - job_name: 'snmp'
     static_configs:
