@@ -119,7 +119,7 @@ services:
         - "traefik.http.routers.snmp-exporter.middlewares=authentik@docker"
 
   nut:
-    image: instantlinux/nut-upsd
+    image: instantlinux/nut-upsd:1fb7e39d48e1996de8cd8717b6a8ceffb1c930ca235fb27f98e255b74c1d67ee
     container_name: nut
     privileged: true
     environment:
