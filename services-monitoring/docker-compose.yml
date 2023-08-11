@@ -41,7 +41,7 @@ services:
     networks:
       - services-monitoring_default
     restart: always
-    user: "1000"
+    user: "0"
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./loki/config/config.yml:/etc/loki/local-config.yaml
