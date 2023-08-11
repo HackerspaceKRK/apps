@@ -118,6 +118,18 @@ services:
         - "traefik.http.routers.snmp-exporter.tls.certresolver=myresolver"
         - "traefik.http.routers.snmp-exporter.middlewares=authentik@docker"
 
+  nut:
+    image: instantlinux/nut-upsd
+    container_name: nut
+    privileged: true
+    environment:
+      - VENDORID=051d
+    ports:
+      - 3493:3493
+    secrets:
+      - nut-upsd-password
+    devices:
+      - /dev/bus/usb/001/003:/dev/bus/usb/001/003
 
   promtail:
     image: grafana/promtail:2.6.1
@@ -136,6 +148,8 @@ secrets:
   authentik_key.pem:
     external: true
   authentik_jwk.json:
+    external: true
+  nut-upsd-password:
     external: true
 
 volumes:
