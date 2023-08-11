@@ -159,6 +159,7 @@ services:
 
   restic-backup:
     image: restic/restic:latest
+    hostname: apps
     secrets:
        - restic_password
        - source: backblaze_credentials
