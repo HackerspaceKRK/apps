@@ -24,6 +24,7 @@ services:
       retries: 5
     networks:
       - system_default
+      - phorge_default
     deploy:
       labels:
         - "traefik.enable=true"
@@ -43,6 +44,8 @@ services:
       - phorge_mysql_password
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/phorge_mysql_password
+    networks:
+      - phorge_default
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -61,4 +64,6 @@ volumes:
   ph-repo:
 networks:
   system_default:
+    external: true
+  phorge_default:
     external: true
