@@ -138,7 +138,7 @@ function recover() {
 
 function phorge_enter() {
     PHORGE_CONTAINER_ID=$($DOCKER ps -qf "name=$PHORGE_SERVICE\.")
-    $DOCKER exec -it $PHORGE_SERVICE /bin/bash
+    $DOCKER exec -it $PHORGE_CONTAINER_ID /bin/bash
 }
 
 if [ -z "$1" ]
