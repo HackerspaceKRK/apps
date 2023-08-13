@@ -1,0 +1,188 @@
+#!/bin/bash
+
+set -e
+
+USAGE=$(cat <<EOF
+Usage: $0 [OPTIONS] SUBCOMMAND [SUBCOMMAND OPTIONS]
+
+OPTIONS:
+  -h, --help
+    Show this help message and exit.
+
+SUBCOMMANDS:
+  up
+    Start all services. Generates secrets and starts up the stack.
+  db-dump-restore BACKUP_FILE
+    Restore MySQL a backup from a dump file.
+    Needs and .sql file as argument.
+    THIS WILL OVERWRITE THE CURRENT DATABASE.
+  db-repl [ARGUMENTS...]
+    Start a MySQL REPL in the databse container.
+  phorge-enter
+    Enter the Phorge container with bash.
+  recover USERNAME
+    Generate a one-time login link for the given username.
+
+NOTES: 
+  - This script requires 'pv' to be installed.
+
+EOF
+)
+
+# Load .env file
+if [ -f .env ]
+then
+    export $(cat .env | sed 's/#.*//g' | xargs)
+fi
+
+COLOR_RED='\033[0;31m'
+COLOR_GREEN='\033[0;32m'
+COLOR_BLUE='\033[0;34m'
+COLOR_RESET='\033[0m'
+
+
+DOCKER="docker"
+
+PHORGE_SERVICE="phorge_phorge"
+MYSQL_SERVICE="phorge_phorge-mysql"
+
+
+
+function db_dump_restore() {
+    if ! command -v pv &> /dev/null
+    then
+        echo "'pv' could not be found"
+        exit 1
+    fi
+
+    if [ -z "$1" ]
+    then
+        echo "Please provide a dump file"
+        exit 1
+    fi
+
+    if [ ! -f "$1" ]
+    then
+        echo "File $1 does not exist"
+        exit 1
+    fi
+
+    DB_FILE=$1
+    
+
+    up
+
+    echo -e "${COLOR_BLUE}Stopping Phorge container${COLOR_RESET}"
+    $DOCKER service rm $PHORGE_SERVICE || echo -e "${COLOR_GREEN}Phorge container not running${COLOR_RESET}"
+    echo -e "${COLOR_GREEN}Stopped Phorge container${COLOR_RESET}"
+
+    # wait until PHORGE SERVICE is down
+    while $DOCKER ps -qf "name=$PHORGE_SERVICE\." | grep -q . ; do
+        echo -e "${COLOR_BLUE}Waiting for Phorge container to stop${COLOR_RESET}"
+        sleep 1
+    done
+
+    MYSQL_CONTAINER_ID=$($DOCKER ps -qf "name=$MYSQL_SERVICE\.")
+  
+    echo -e "${COLOR_BLUE}Dropping databases starting with 'phabricator_' and 'phabricator' itself.${COLOR_RESET}"
+    MYSQL_ROOT_PASSWORD=$($DOCKER exec $MYSQL_CONTAINER_ID cat /run/secrets/phorge_mysql_password)
+  
+    $DOCKER exec -i $MYSQL_CONTAINER_ID mysql -u root -p$MYSQL_ROOT_PASSWORD < gen_drop_phabri.sql_script | \
+        $DOCKER exec -i $MYSQL_CONTAINER_ID mysql -u root -p$MYSQL_ROOT_PASSWORD
+    echo -e "${COLOR_GREEN}Dropped database${COLOR_RESET}"
+
+    echo -e "${COLOR_BLUE}Restoring database from $DB_FILE${COLOR_RESET}"
+    pv $DB_FILE |  $DOCKER exec -i $MYSQL_CONTAINER_ID /bin/bash -c 'mysql -u root -p$(cat /run/secrets/phorge_mysql_password)'
+
+    echo -e "${COLOR_BLUE}Restarting Phorge container${COLOR_RESET}"
+    up
+    
+}
+
+function db_repl() {
+    
+    MYSQL_CONTAINER_ID=$($DOCKER ps -qf "name=$MYSQL_SERVICE\.")
+
+    $DOCKER exec  -it $MYSQL_CONTAINER_ID /bin/bash -c 'mysql -u root -p$(cat /run/secrets/phorge_mysql_password)'
+}
+
+function up() {
+    # ensure that phorge-mailers.json exists
+    if [ ! -f phorge-mailers.json ]
+    then
+        echo "${COLOR_RED}phorge-mailers.json does not exist."
+        exit 1
+    fi
+    # check if phorge_mysql_password secret exists
+    if [[ -z "$($DOCKER secret ls | grep phorge_mysql_password)" ]]
+    then
+        echo "phorge_mysql_password secret does not exist. Creating..."
+        dd if=/dev/urandom bs=1 count=32 status=none | base64 | $DOCKER secret create phorge_mysql_password -
+    fi
+    docker stack deploy -c docker-compose.yml phorge --with-registry-auth
+}
+
+function recover() {
+    if [ -z "$1" ]
+    then
+        echo "Please provide a username"
+        exit 1
+    fi
+
+    USERNAME=$1
+
+    PHORGE_CONTAINER_ID=$($DOCKER ps -qf "name=$PHORGE_SERVICE\.")
+
+    $DOCKER exec $PHORGE_CONTAINER_ID bash -c "/var/www/phorge/phorge/bin/auth recover $USERNAME"
+}
+
+function phorge_enter() {
+    PHORGE_CONTAINER_ID=$($DOCKER ps -qf "name=$PHORGE_SERVICE\.")
+    $DOCKER exec -it $PHORGE_CONTAINER_ID /bin/bash
+}
+
+if [ -z "$1" ]
+then
+    echo "$USAGE"
+    exit 1
+fi
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        db-dump-restore)
+            shift
+            db_dump_restore $@
+            exit 0
+            ;;
+        db-repl)
+            shift
+            db_repl $@
+            exit 0
+            ;;
+        phorge-enter)
+            shift
+            phorge_enter
+            exit 0
+            ;;
+        up)
+            shift
+            up
+            exit 0
+            ;;
+        recover)
+            shift
+            recover $@
+            exit 0
+            ;;
+        *)
+            echo "Unknown command $1"
+            echo "$USAGE"
+            exit 1
+            ;;
+    esac
+done

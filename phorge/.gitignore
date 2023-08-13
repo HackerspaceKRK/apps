@@ -1,0 +1,6 @@
+.env
+database-volume
+database-volume*
+*.sql.gz
+*.sql
+phorge-mailers.json
