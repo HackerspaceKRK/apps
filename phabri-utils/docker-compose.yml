@@ -41,6 +41,5 @@ secrets:
     external: true
 
 configs:
-    phabricator-tele-notifier.yaml:
-        external: true
-
+  phabricator-tele-notifier.yaml:
+    external: true

@@ -161,9 +161,9 @@ services:
     image: restic/restic:latest
     hostname: apps
     secrets:
-       - restic_password
-       - source: backblaze_credentials
-         target: /root/.aws/credentials
+      - restic_password
+      - source: backblaze_credentials
+        target: /root/.aws/credentials
     environment:
       - RESTIC_REPOSITORY=${RESTIC_REPOSITORY}
       - RESTIC_PASSWORD_FILE=/run/secrets/restic_password

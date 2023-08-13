@@ -1,8 +1,8 @@
 # README
 
-Dockerized setup for running Phorge in a container. Based on: https://github.com/cooperspencer/phorge
+Dockerized setup for running Phorge in a container. Based on: <https://github.com/cooperspencer/phorge>
 
-# Usage
+## Usage
 
 Common tasks are facilitated using the `./manage` utility script:
 
@@ -14,17 +14,16 @@ Common tasks are facilitated using the `./manage` utility script:
 | `./manage db-dump-restore FILE.sql` | Restore a database dump from the host into the database container. **THIS  WILL OVERWRITE THE DATABASE** |
 | `./manage recover USERNAME` | Generate one-time login link for a user. |
 
-# Migration plan from Rudy
+## Migration plan from Rudy
 
 1. Dump database from Rudy using `mysqldump --user phabricator --password --all-databases --result-file=./dump.sql`
 2. Move `dump.sql` to apps VM
 3. Run `./manage db-dump-restore dump.sql` to restore the database in the new container
 4. Profit
 
-# Tweaking
+## Tweaking
 
- - Adjust `innodb_buffer_pool_size` in `phorge/mysql-config/custom_config.cnf`
-
+- Adjust `innodb_buffer_pool_size` in `phorge/mysql-config/custom_config.cnf`
 
 ## Updating phorge
 

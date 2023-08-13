@@ -23,7 +23,7 @@ SUBCOMMANDS:
   recover USERNAME
     Generate a one-time login link for the given username.
 
-NOTES: 
+NOTES:
   - This script requires 'pv' to be installed.
 
 EOF
@@ -68,7 +68,7 @@ function db_dump_restore() {
     fi
 
     DB_FILE=$1
-    
+
 
     up
 
@@ -83,10 +83,10 @@ function db_dump_restore() {
     done
 
     MYSQL_CONTAINER_ID=$($DOCKER ps -qf "name=$MYSQL_SERVICE\.")
-  
+
     echo -e "${COLOR_BLUE}Dropping databases starting with 'phabricator_' and 'phabricator' itself.${COLOR_RESET}"
     MYSQL_ROOT_PASSWORD=$($DOCKER exec $MYSQL_CONTAINER_ID cat /run/secrets/phorge_mysql_password)
-  
+
     $DOCKER exec -i $MYSQL_CONTAINER_ID mysql -u root -p$MYSQL_ROOT_PASSWORD < gen_drop_phabri.sql_script | \
         $DOCKER exec -i $MYSQL_CONTAINER_ID mysql -u root -p$MYSQL_ROOT_PASSWORD
     echo -e "${COLOR_GREEN}Dropped database${COLOR_RESET}"
@@ -96,11 +96,11 @@ function db_dump_restore() {
 
     echo -e "${COLOR_BLUE}Restarting Phorge container${COLOR_RESET}"
     up
-    
+
 }
 
 function db_repl() {
-    
+
     MYSQL_CONTAINER_ID=$($DOCKER ps -qf "name=$MYSQL_SERVICE\.")
 
     $DOCKER exec  -it $MYSQL_CONTAINER_ID /bin/bash -c 'mysql -u root -p$(cat /run/secrets/phorge_mysql_password)'
