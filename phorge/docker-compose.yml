@@ -23,6 +23,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+     networks:
+      - system_default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.phorge.loadbalancer.server.port=3000"
+        - "traefik.http.routers.phorge.rule=Host(`phorge.apps.hskrk.pl`)"
+        - "traefik.http.routers.phorge.tls=true"
+        - "traefik.http.routers.phorge.tls.certresolver=myresolver"
   phorge-mysql:
     image: mariadb:10.6.14
     volumes:
@@ -50,3 +60,6 @@ configs:
 volumes:
   phorge-database-volume:
   ph-repo:
+networks:
+  system_default:
+    external: true
