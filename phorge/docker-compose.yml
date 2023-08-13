@@ -66,4 +66,4 @@ networks:
   system_default:
     external: true
   phorge_default:
-    external: true
+    external: false
