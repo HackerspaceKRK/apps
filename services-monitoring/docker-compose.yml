@@ -42,6 +42,8 @@ services:
     image: grafana/grafana-image-renderer:latest
     networks:
       - services-monitoring_default
+    environment:
+      - HTTP_HOST=0.0.0.0
 
   loki:
     image: grafana/loki:2.6.1
