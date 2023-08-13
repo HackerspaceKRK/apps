@@ -40,6 +40,8 @@ services:
 
   renderer:
     image: grafana/grafana-image-renderer:latest
+    networks:
+      - services-monitoring_default
 
   loki:
     image: grafana/loki:2.6.1
