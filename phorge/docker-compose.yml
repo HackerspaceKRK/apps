@@ -1,40 +1,39 @@
 version: '3'
 services:
   phorge:
-    image: 
-    restart: unless-stopped
+    image: ghcr.io/hackerspacekrk/phorge-docker:latest
     ports:
-      - "8030:80"
+      - target: 80
+        published: 8030
+        mode: host
     depends_on:
-      - phorge-mysql
-    links:
       - phorge-mysql
     environment: 
       - MYSQL_HOST=phorge-mysql
       - MYSQL_PORT=3306
       - MYSQL_USER=root
       - MYSQL_PASSWORD_FILE=/run/secrets/phorge_mysql_password
-      - BASE_URI=${BASE_URI}
-      - SMTP_SERVER=${SMTP_SERVER}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_USER=${SMTP_USER}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - SMTP_PROTOCOL=${SMTP_PROTOCOL}
+      - BASE_URI=phorge.localhost:8030
+      - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
     volumes: 
       - ./ph-repo:/var/repo
     secrets:
       - phorge_mysql_password
+    configs:
+      - source: phorge_mailers_config
+        target: /tmp/phorge-mailers.json
     healthcheck:
-      test: ["CMD", "curl", "-H", "Host: ${BASE_URI}", "http://localhost:80/status"]
+      test: ["CMD", "curl", "-H", "Host: phorge.localhost:8030", "http://localhost:80/status"]
       interval: 10s
       timeout: 5s
       retries: 5
   phorge-mysql:
     image: mariadb:10.6.14
-    restart: unless-stopped
     volumes:
-      - ./database-volume:/var/lib/mysql
-      - ./mysql-config:/etc/mysql/conf.d
+      - phorge-database-volume:/var/lib/mysql
+    configs:
+      - source: mysql_config
+        target: /etc/mysql/conf.d/mysql-config.cnf
     secrets:
       - phorge_mysql_password
     environment:
@@ -47,3 +46,10 @@ services:
 secrets:
   phorge_mysql_password:
     external: true
+configs:
+  phorge_mailers_config:
+    file: ./phorge-mailers.json
+  mysql_config:
+    file: ./mysql-config.cnf
+volumes:
+  phorge-database-volume:

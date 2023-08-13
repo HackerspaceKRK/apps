@@ -11,7 +11,7 @@ OPTIONS:
 
 SUBCOMMANDS:
   up
-    Start all services. Alias for 'docker compose up -d --build --wait --wait-timeout 120'.
+    Start all services. Generates secrets and starts up the stack.
   db-dump-restore BACKUP_FILE
     Restore MySQL a backup from a dump file.
     Needs and .sql file as argument.
@@ -25,7 +25,6 @@ SUBCOMMANDS:
 
 NOTES: 
   - This script requires 'pv' to be installed.
-  - This script requires 'docker compose' to be installed.
 
 EOF
 )
@@ -41,25 +40,18 @@ COLOR_GREEN='\033[0;32m'
 COLOR_BLUE='\033[0;34m'
 COLOR_RESET='\033[0m'
 
-DOCKER_COMPOSE="docker compose"
+
 DOCKER="docker"
 
-PHORGE_SERVICE="phorge"
-MYSQL_SERVICE="phorge-mysql"
+PHORGE_SERVICE="phorge_phorge"
+MYSQL_SERVICE="phorge_phorge-mysql"
 
 
 
 function db_dump_restore() {
-    # check if pv and $DOCKER_COMPOSE are installed
     if ! command -v pv &> /dev/null
     then
         echo "'pv' could not be found"
-        exit 1
-    fi
-
-    if ! command -v $DOCKER_COMPOSE &> /dev/null
-    then
-        echo "'$DOCKER_COMPOSE' could not be found"
         exit 1
     fi
 
@@ -76,38 +68,51 @@ function db_dump_restore() {
     fi
 
     DB_FILE=$1
+    
+
+    up
 
     echo -e "${COLOR_BLUE}Stopping Phorge container${COLOR_RESET}"
-    $DOCKER_COMPOSE stop $PHORGE_SERVICE
+    $DOCKER service rm $PHORGE_SERVICE || echo -e "${COLOR_GREEN}Phorge container not running${COLOR_RESET}"
     echo -e "${COLOR_GREEN}Stopped Phorge container${COLOR_RESET}"
 
-    echo -e "${COLOR_BLUE}Ensuring MySQL container is running${COLOR_RESET}"
-    $DOCKER_COMPOSE up -d $MYSQL_SERVICE --wait --wait-timeout 120
-    echo  -e "${COLOR_GREEN}MySQL container is running${COLOR_RESET}"
+    # wait until PHORGE SERVICE is down
+    while $DOCKER ps -qf "name=$PHORGE_SERVICE\." | grep -q . ; do
+        echo -e "${COLOR_BLUE}Waiting for Phorge container to stop${COLOR_RESET}"
+        sleep 1
+    done
 
+    MYSQL_CONTAINER_ID=$($DOCKER ps -qf "name=$MYSQL_SERVICE\.")
+  
     echo -e "${COLOR_BLUE}Dropping databases starting with 'phabricator_' and 'phabricator' itself.${COLOR_RESET}"
-   
-    $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD < gen_drop_phabri.sql_script | \
-        $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD
+    MYSQL_ROOT_PASSWORD=$($DOCKER exec $MYSQL_CONTAINER_ID cat /run/secrets/phorge_mysql_password)
+  
+    $DOCKER exec -i $MYSQL_CONTAINER_ID mysql -u root -p$MYSQL_ROOT_PASSWORD < gen_drop_phabri.sql_script | \
+        $DOCKER exec -i $MYSQL_CONTAINER_ID mysql -u root -p$MYSQL_ROOT_PASSWORD
     echo -e "${COLOR_GREEN}Dropped database${COLOR_RESET}"
 
     echo -e "${COLOR_BLUE}Restoring database from $DB_FILE${COLOR_RESET}"
-    pv $DB_FILE | $DOCKER_COMPOSE exec -T $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD
+    pv $DB_FILE |  $DOCKER exec -i $MYSQL_CONTAINER_ID /bin/bash -c 'mysql -u root -p$(cat /run/secrets/phorge_mysql_password)'
 
     echo -e "${COLOR_BLUE}Restarting Phorge container${COLOR_RESET}"
-    docker stack deploy -c docker-compose.yml phorge --with-registry-auth
+    up
     
 }
 
 function db_repl() {
-    echo -e "${COLOR_BLUE}Ensuring MySQL container is running${COLOR_RESET}"
-    $DOCKER_COMPOSE up -d $MYSQL_SERVICE --wait --wait-timeout 120
-    echo  -e "${COLOR_GREEN}MySQL container is running${COLOR_RESET}"
-    echo $@
-    $DOCKER_COMPOSE exec $MYSQL_SERVICE mysql -u root -p$MYSQL_ROOT_PASSWORD $@
+    
+    MYSQL_CONTAINER_ID=$($DOCKER ps -qf "name=$MYSQL_SERVICE\.")
+
+    $DOCKER exec  -it $MYSQL_CONTAINER_ID /bin/bash -c 'mysql -u root -p$(cat /run/secrets/phorge_mysql_password)'
 }
 
 function up() {
+    # ensure that phorge-mailers.json exists
+    if [ ! -f phorge-mailers.json ]
+    then
+        echo "${COLOR_RED}phorge-mailers.json does not exist."
+        exit 1
+    fi
     # check if phorge_mysql_password secret exists
     if [[ -z "$($DOCKER secret ls | grep phorge_mysql_password)" ]]
     then
@@ -126,7 +131,14 @@ function recover() {
 
     USERNAME=$1
 
-    $DOCKER_COMPOSE exec $PHORGE_SERVICE bash -c "/var/www/phorge/phorge/bin/auth recover $USERNAME"
+    PHORGE_CONTAINER_ID=$($DOCKER ps -qf "name=$PHORGE_SERVICE\.")
+
+    $DOCKER exec $PHORGE_CONTAINER_ID bash -c "/var/www/phorge/phorge/bin/auth recover $USERNAME"
+}
+
+function phorge_enter() {
+    PHORGE_CONTAINER_ID=$($DOCKER ps -qf "name=$PHORGE_SERVICE\.")
+    $DOCKER exec -it $PHORGE_SERVICE /bin/bash
 }
 
 if [ -z "$1" ]
@@ -154,7 +166,7 @@ do
             ;;
         phorge-enter)
             shift
-            $DOCKER_COMPOSE exec $PHORGE_SERVICE bash
+            phorge_enter
             exit 0
             ;;
         up)
