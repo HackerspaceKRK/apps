@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   phorge:
     image: ghcr.io/hackerspacekrk/phorge-docker:latest
@@ -23,7 +23,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-     networks:
+    networks:
       - system_default
     deploy:
       labels:
