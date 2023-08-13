@@ -15,7 +15,6 @@ services:
       - ph-repo:/var/repo
     secrets:
       - phorge_mysql_password
-    configs:
       - source: phorge_mailers_config
         target: /tmp/phorge-mailers.json
     healthcheck:
@@ -52,9 +51,9 @@ services:
 secrets:
   phorge_mysql_password:
     external: true
-configs:
   phorge_mailers_config:
-    file: ./phorge-mailers.json
+    external: true
+configs:
   mysql_config:
     file: ./mysql-config.cnf
 volumes:
