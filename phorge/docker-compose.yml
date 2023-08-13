@@ -12,7 +12,7 @@ services:
       - BASE_URI=phorge.apps.hskrk.pl
       - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
     volumes: 
-      - ./ph-repo:/var/repo
+      - ph-repo:/var/repo
     secrets:
       - phorge_mysql_password
     configs:
@@ -49,3 +49,4 @@ configs:
     file: ./mysql-config.cnf
 volumes:
   phorge-database-volume:
+  ph-repo:
