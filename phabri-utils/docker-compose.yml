@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   task_creator:
-    image: hskrk/telegram_phabricator:latest
+    image: ghcr.io/hbrylkowski/phabricatortelenotifier:master
     secrets:
       - telegram_token
       - phabricator_token
