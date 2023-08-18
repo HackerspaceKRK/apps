@@ -78,6 +78,6 @@ scrape_configs:
   - job_name: 'power-meter'
     scrape_interval: 15s
     static_configs:
-      - targets: ['10.12.10.140']
+      - targets: ['10.12.10.242']
         labels:
           device: power-meter
