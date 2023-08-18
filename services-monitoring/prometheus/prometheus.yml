@@ -74,3 +74,10 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: snmp-exporter:9116  # The SNMP exporter's real hostname:port.
+
+  - job_name: 'power-meter'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.12.10.140']
+        labels:
+          device: power-meter
