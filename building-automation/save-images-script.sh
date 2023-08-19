@@ -3,7 +3,7 @@ set -ex
 IMAGES_DIR=/tmp/images
 
 ZONEMINDER_LOGIN=$(cat /run/secrets/zoneminder_login)
-ZONEMINDER_PASSWORD=$(cat /run/secrets/zoneminder_login)
+ZONEMINDER_PASSWORD=$(cat /run/secrets/zoneminder_password)
 
 mkdir -p ${IMAGES_DIR}
 
