@@ -21,6 +21,28 @@ services:
     volumes:
       - nodered_data:/data
 
+  render-images:
+    image: amazon/aws-cli:latest
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 0
+      labels:
+        - "swarm.cronjob.enable=true"
+        - "swarm.cronjob.schedule=*/5 * * * *"
+        - "swarm.cronjob.skip-running=true"
+      restart_policy:
+        condition: none
+    environment:
+      - IMAGES_BUCKET=hskrk-images
+      - S3_ENDPOINT=https://s3.us-east-005.backblazeb2.com
+    volumes:
+      - ./save-images-script.sh:/opt/save-images-script.sh
+    entrypoint:
+      - /bin/bash
+    command:
+      - /opt/save-images-script.sh
+
 volumes:
   nodered_data:
 
