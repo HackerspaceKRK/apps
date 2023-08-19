@@ -36,6 +36,9 @@ services:
     environment:
       - IMAGES_BUCKET=hskrk-images
       - S3_ENDPOINT=https://s3.us-east-005.backblazeb2.com
+    secrets:
+      - source: image_render_s3_credentials
+        target: /root/.aws/credentials
     volumes:
       - ./save-images-script.sh:/opt/save-images-script.sh
     entrypoint:
@@ -48,4 +51,8 @@ volumes:
 
 networks:
   system_default:
+    external: true
+
+secrets:
+  image_render_s3_credentials:
     external: true
