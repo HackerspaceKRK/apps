@@ -27,7 +27,7 @@ function download(){
   curl 'https://grafana.apps.hskrk.pl/render/d-solo/efd454c7-2714-4507-b5b5-188e1feceeb7/public-network-stats?orgId=1&panelId=2&width=1000&height=500&tz=Europe%2FWarsaw' > ${IMAGES_DIR}/public-network-stats.png
   curl 'https://grafana.apps.hskrk.pl/render/d-solo/cc375ef7-341d-4ded-9a3d-73b886f46c08/power-consumption?orgId=1&panelId=1&width=1000&height=500&tz=Europe%2FWarsaw' > ${IMAGES_DIR}/power-consumption.png
 
-  aws s3 --endpoint-url=${S3_ENDPOINT} cp ${IMAGES_DIR}/* s3://${IMAGES_BUCKET}/
+  aws s3 --endpoint-url=${S3_ENDPOINT} sync ${IMAGES_DIR}/ s3://${IMAGES_BUCKET}/
 }
 
 download
