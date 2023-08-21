@@ -27,3 +27,22 @@ certificatesResolvers:
       storage: "/traefik/acme/acme.json"
       httpChallenge:
         entryPoint: "web"
+
+http:
+  services:
+    oscilloscope-service:
+      loadBalancer:
+        servers:
+          - url: "http://10.12.10.145"
+
+  routers:
+    oscilloscope-router:
+      entryPoints:
+        - "web"
+        - "websecure"
+      service: oscilloscope-service
+      rule: "Host(`oscyloskop.at.hskrk.pl`) || Host(`oscilloscope.at.hskrk.pl`)"
+      tls:
+        certResolver: myresolver
+      middlewares:
+        - authentik@docker
