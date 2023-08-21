@@ -107,12 +107,6 @@ function db_repl() {
 }
 
 function up() {
-    # ensure that phorge-mailers.json exists
-    if [ ! -f phorge-mailers.json ]
-    then
-        echo "${COLOR_RED}phorge-mailers.json does not exist."
-        exit 1
-    fi
     # check if phorge_mysql_password secret exists
     if [[ -z "$($DOCKER secret ls | grep phorge_mysql_password)" ]]
     then
