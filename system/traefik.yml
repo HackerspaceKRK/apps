@@ -1,0 +1,29 @@
+api:
+  insecure: true
+
+providers:
+  docker:
+    exposedByDefault: false
+    swarmMode: true
+
+entryPoints:
+  web:
+    address: ":80"
+    forwardedHeaders:
+      trustedIPs:
+        - "10.0.0.0/16"
+    http:
+      redirections:
+        entryPoint:
+          to: "websecure"
+          scheme: "https"
+
+  websecure:
+    address: ":443"
+
+certificatesResolvers:
+  myresolver:
+    acme:
+      storage: "/traefik/acme/acme.json"
+      httpChallenge:
+        entryPoint: "web"

@@ -9,27 +9,13 @@ services:
       - system_default
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml
       - traefik_certificates:/traefik/acme
       - traefik_letsencrypt:/letsencrypt"
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
-    depends_on:
-      - authentik
-    command:
-      - "--api"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedByDefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entryPoints.websecure.address=:443"
-      - "--api.insecure=true"
-      - "--providers.docker.swarmMode=true"
-      - "--entryPoints.web.forwardedHeaders.trustedIPs=10.0.0.0/16"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.myresolver.acme.storage=/traefik/acme/acme.json"
     deploy:
       labels:
         - "traefik.enable=true"
