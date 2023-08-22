@@ -4,6 +4,7 @@ services:
   minio:
     networks:
       - minio
+      - system_default
     image: quay.io/minio/minio:RELEASE.2023-08-16T20-17-30Z
     command: server /data --console-address ":9001"
     environment:
@@ -32,3 +33,5 @@ networks:
   minio:
     attachable: true
     name: minio
+  system_default:
+    external: true
