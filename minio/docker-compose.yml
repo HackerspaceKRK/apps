@@ -25,6 +25,10 @@ services:
         - "traefik.http.routers.minio.rule=Host(`minio.apps.hskrk.pl`)"
         - "traefik.http.routers.minio.tls=true"
         - "traefik.http.routers.minio.tls.certresolver=myresolver"
+        - "traefik.http.services.s3-minio.loadbalancer.server.port=9000"
+        - "traefik.http.routers.s3-minio.rule=Host(`static.apps.hskrk.pl`)"
+        - "traefik.http.routers.s3-minio.tls=true"
+        - "traefik.http.routers.s3-minio.tls.certresolver=myresolver"
 
 volumes:
   minio:
