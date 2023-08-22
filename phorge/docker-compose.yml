@@ -4,7 +4,7 @@ services:
     image: ghcr.io/hackerspacekrk/phorge-docker:latest
     depends_on:
       - phorge-mysql
-    environment: 
+    environment:
       - MYSQL_HOST=phorge-mysql
       - MYSQL_PORT=3306
       - MYSQL_USER=root
@@ -12,7 +12,7 @@ services:
       - BASE_URI=phorge.apps.hskrk.pl
       - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
       - PROTOCOL=https
-    volumes: 
+    volumes:
       - ph-repo:/var/repo
     secrets:
       - phorge_mysql_password

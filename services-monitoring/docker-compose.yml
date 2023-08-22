@@ -10,8 +10,8 @@ services:
     secrets:
       - authentik_jwk.json
     volumes:
-       - grafana_data:/var/lib/grafana/
-       - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
+      - grafana_data:/var/lib/grafana/
+      - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
       GF_AUTH_GENERIC_OAUTH_NAME: "authentik"
