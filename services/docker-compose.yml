@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  etherpad:
+    image: etherpad/etherpad:1.8.16
+    ports:
+      - 9001:9001
+    depends_on:
+      - db
+    volumes:
+      - etherpad_modules:/opt/etherpad-lite/node_modules
+    networks:
+      - pad
+      - system_default
+    environment:
+      ADMIN_PASSWORD: admin
+      DB_TYPE: mysql
+      DB_HOST: db
+      DB_NAME: etherpad
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: example
+      LOGLEVEL: DEBUG
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.port=80"
+        - "traefik.http.services.pad.loadbalancer.server.port=9001"
+        - "traefik.http.routers.pad.rule=Host(`pad.apps.hskrk.pl`)"
+        - "traefik.http.routers.pad.tls=true"
+        - "traefik.http.routers.pad.tls.certresolver=myresolver"
+
+  db:
+    image: mariadb
+    restart: always
+    networks:
+      - pad
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    volumes:
+      - etherpad_db:/var/lib/mysql
+
+volumes:
+    etherpad_modules:
+    etherpad_db:
+
+networks:
+  system_default:
+    external: true
+  pad:
