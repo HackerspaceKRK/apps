@@ -6,7 +6,7 @@ services:
       - minio
       - system_default
     image: quay.io/minio/minio:RELEASE.2023-08-16T20-17-30Z
-    command: server /data --console-address ":9001"
+    command: server https://static.apps.hskrk.pl/data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
@@ -23,10 +23,12 @@ services:
         - "traefik.docker.network=system_default"
         - "traefik.http.services.minio.loadbalancer.server.port=9001"
         - "traefik.http.routers.minio.rule=Host(`minio.apps.hskrk.pl`)"
+        - "traefik.http.routers.minio.service=minio"
         - "traefik.http.routers.minio.tls=true"
         - "traefik.http.routers.minio.tls.certresolver=myresolver"
         - "traefik.http.services.s3-minio.loadbalancer.server.port=9000"
         - "traefik.http.routers.s3-minio.rule=Host(`static.apps.hskrk.pl`)"
+        - "traefik.http.routers.s3-minio.service=s3-minio"
         - "traefik.http.routers.s3-minio.tls=true"
         - "traefik.http.routers.s3-minio.tls.certresolver=myresolver"
 
