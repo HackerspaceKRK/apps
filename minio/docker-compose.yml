@@ -6,7 +6,7 @@ services:
       - minio
       - system_default
     image: quay.io/minio/minio:RELEASE.2023-08-16T20-17-30Z
-    command: server https://static.apps.hskrk.pl/data --console-address ":9001"
+    command: server /data --address "static.apps.hskrk.pl" --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
