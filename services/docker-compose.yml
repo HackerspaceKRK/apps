@@ -41,8 +41,8 @@ services:
       - etherpad_db:/var/lib/mysql
 
 volumes:
-    etherpad_modules:
-    etherpad_db:
+  etherpad_modules:
+  etherpad_db:
 
 networks:
   system_default:
