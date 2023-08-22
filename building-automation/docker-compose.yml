@@ -24,6 +24,8 @@ services:
   render-images:
     image: amazon/aws-cli:latest
     restart: unless-stopped
+    networks:
+      - minio
     deploy:
       mode: replicated
       replicas: 0
@@ -34,8 +36,8 @@ services:
       restart_policy:
         condition: none
     environment:
-      - IMAGES_BUCKET=hskrk-images
-      - S3_ENDPOINT=https://s3.us-east-005.backblazeb2.com
+      - IMAGES_BUCKET=at-statics
+      - S3_ENDPOINT=http://minio:9000
     secrets:
       - source: image_render_s3_credentials
         target: /root/.aws/credentials
@@ -54,6 +56,9 @@ volumes:
 networks:
   system_default:
     external: true
+  minio:
+    external: true
+    name: minio
 
 secrets:
   image_render_s3_credentials:
