@@ -12,7 +12,7 @@ services:
       - BASE_URI=phorge.apps.hskrk.pl
       - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
       - PROTOCOL=https
-    volumes: 
+    volumes:
       - ph-repo:/var/repo
     secrets:
       - phorge_mysql_password
