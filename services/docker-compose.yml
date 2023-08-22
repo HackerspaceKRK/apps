@@ -12,7 +12,7 @@ services:
       - pad
       - system_default
     environment:
-      ADMIN_PASSWORD: admin
+      ADMIN_PASSWORD: ${ETHERPAD_ADMIN_PASSWORD}
       DB_TYPE: mysql
       DB_HOST: db
       DB_NAME: etherpad
