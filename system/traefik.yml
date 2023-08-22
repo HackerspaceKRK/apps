@@ -29,4 +29,3 @@ certificatesResolvers:
       storage: "/traefik/acme/acme.json"
       httpChallenge:
         entryPoint: "web"
-
