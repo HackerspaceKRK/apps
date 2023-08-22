@@ -23,6 +23,9 @@ entryPoints:
   websecure:
     address: ":443"
 
+  sa-wss:
+    address: ":5900"
+
 certificatesResolvers:
   myresolver:
     acme:

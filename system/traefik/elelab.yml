@@ -8,6 +8,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.12.10.144"
+    spectrum-analyzer-wss-service:
+      loadBalancer:
+        servers:
+          - url: "http://10.12.10.144:5900"
 
   routers:
     oscilloscope-router:
@@ -26,6 +30,15 @@ http:
         - "websecure"
       service: spectrum-analyzer-service
       rule: "Host(`sa.at.hskrk.pl`)"
+      tls:
+        certResolver: myresolver
+      middlewares:
+        - authentik@docker
+    spectrum-analyzer-wss-router:
+      entryPoints:
+        - "wss-sa"
+      service: spectrum-analyzer-wss-service
+      rule: "Host(`sa.at.hskrk.pl`) && Port(`5900`)"
       tls:
         certResolver: myresolver
       middlewares:

@@ -16,7 +16,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      - "5900:5900"
     deploy:
       labels:
         - "traefik.enable=true"
@@ -25,6 +25,8 @@ services:
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
         - "traefik.http.routers.traefik.rule=Host(`traefik.apps.hskrk.pl`)"
         - "traefik.http.routers.traefik.middlewares=authentik@docker"
+        - "traefik.http.routers.traefik.tls=true"
+        - "traefik.http.routers.traefik.tls.certresolver=myresolver"
 
   authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2023.6.1}
