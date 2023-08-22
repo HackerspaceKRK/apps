@@ -14,6 +14,8 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
         - "traefik.http.services.nodered.loadbalancer.server.port=1880"
+        - "traefik.http.routers.nodered-internal.rule=Host(`nodered.apps.hskrk.pl`) && ClientIP(`10.0.0.0/8`)"
+        - "traefik.http.routers.nodered-internal.tls=true"
         - "traefik.http.routers.nodered.rule=Host(`nodered.apps.hskrk.pl`)"
         - "traefik.http.routers.nodered.middlewares=authentik@docker"
         - "traefik.http.routers.nodered.tls=true"
@@ -21,9 +23,44 @@ services:
     volumes:
       - nodered_data:/data
 
+  render-images:
+    image: amazon/aws-cli:latest
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 0
+      labels:
+        - "swarm.cronjob.enable=true"
+        - "swarm.cronjob.schedule=*/5 * * * *"
+        - "swarm.cronjob.skip-running=true"
+      restart_policy:
+        condition: none
+    environment:
+      - IMAGES_BUCKET=hskrk-images
+      - S3_ENDPOINT=https://s3.us-east-005.backblazeb2.com
+    secrets:
+      - source: image_render_s3_credentials
+        target: /root/.aws/credentials
+      - zoneminder_password
+      - zoneminder_login
+    volumes:
+      - ./save-images-script.sh:/opt/save-images-script.sh
+    entrypoint:
+      - /bin/bash
+    command:
+      - /opt/save-images-script.sh
+
 volumes:
   nodered_data:
 
 networks:
   system_default:
+    external: true
+
+secrets:
+  image_render_s3_credentials:
+    external: true
+  zoneminder_password:
+    external: true
+  zoneminder_login:
     external: true

@@ -11,11 +11,11 @@ services:
       - MYSQL_PASSWORD_FILE=/run/secrets/phorge_mysql_password
       - BASE_URI=phorge.apps.hskrk.pl
       - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
-    volumes:
+      - PROTOCOL=https
+    volumes: 
       - ph-repo:/var/repo
     secrets:
       - phorge_mysql_password
-    configs:
       - source: phorge_mailers_config
         target: /tmp/phorge-mailers.json
     healthcheck:
@@ -25,11 +25,12 @@ services:
       retries: 5
     networks:
       - system_default
+      - phorge_default
     deploy:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
-        - "traefik.http.services.phorge.loadbalancer.server.port=3000"
+        - "traefik.http.services.phorge.loadbalancer.server.port=80"
         - "traefik.http.routers.phorge.rule=Host(`phorge.apps.hskrk.pl`)"
         - "traefik.http.routers.phorge.tls=true"
         - "traefik.http.routers.phorge.tls.certresolver=myresolver"
@@ -44,6 +45,8 @@ services:
       - phorge_mysql_password
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/phorge_mysql_password
+    networks:
+      - phorge_default
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -52,9 +55,9 @@ services:
 secrets:
   phorge_mysql_password:
     external: true
-configs:
   phorge_mailers_config:
-    file: ./phorge-mailers.json
+    external: true
+configs:
   mysql_config:
     file: ./mysql-config.cnf
 volumes:
@@ -63,3 +66,5 @@ volumes:
 networks:
   system_default:
     external: true
+  phorge_default:
+    external: false
