@@ -56,6 +56,13 @@ services:
     shm_size: "512mb" # update for your cameras based on calculation above
     devices:
       - /dev/dri:/dev/dri
+    environment:
+      - FRIGATE_ELAB_RTSP=${FRIGATE_ELAB_RTSP}
+      - FRIGATE_SOFTROOM_RTSP=${FRIGATE_SOFTROOM_RTSP}
+      - FRIGATE_HARDROOM_NA_DRZWI_RTSP=${FRIGATE_HARDROOM_NA_DRZWI_RTSP}
+      - FRIGATE_HARDROOM_OD_DRZWI_RTSP=${FRIGATE_HARDROOM_OD_DRZWI_RTSP}
+      - FRIGATE_KORYTARZ_RTSP=${FRIGATE_KORYTARZ_RTSP}
+      - FRIGATE_KORYTARZ_WYJSCIE_RTSP=${FRIGATE_KORYTARZ_WYJSCIE_RTSP}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./frigate_config.yml:/config/config.yml:ro
