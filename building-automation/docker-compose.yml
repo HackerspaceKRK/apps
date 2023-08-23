@@ -63,6 +63,7 @@ services:
       - FRIGATE_HARDROOM_OD_DRZWI_RTSP=${FRIGATE_HARDROOM_OD_DRZWI_RTSP}
       - FRIGATE_KORYTARZ_RTSP=${FRIGATE_KORYTARZ_RTSP}
       - FRIGATE_KORYTARZ_WYJSCIE_RTSP=${FRIGATE_KORYTARZ_WYJSCIE_RTSP}
+      - FRIGATE_MAGAZYNEK2_RTSP=${FRIGATE_MAGAZYNEK2_RTSP}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./frigate_config.yml:/config/config.yml:ro
@@ -71,13 +72,14 @@ services:
         target: /tmp/cache
         tmpfs:
           size: 1000000000
-    labels:
-      - "traefik.http.services.frigate.loadbalancer.server.port=5000"
-      - "traefik.http.routers.frigate.rule=Host(`frigate.apps.hskrk.pl`)"
-      - "traefik.enable=true"
-      - "traefik.http.routers.frigate.middlewares=authentik@docker"
-      - "traefik.http.routers.frigate.tls=true"
-      - "traefik.http.routers.frigate.tls.certresolver=myresolver"
+    deploy:
+      labels:
+        - "traefik.http.services.frigate.loadbalancer.server.port=5000"
+        - "traefik.http.routers.frigate.rule=Host(`frigate.apps.hskrk.pl`)"
+        - "traefik.enable=true"
+        - "traefik.http.routers.frigate.middlewares=authentik@docker"
+        - "traefik.http.routers.frigate.tls=true"
+        - "traefik.http.routers.frigate.tls.certresolver=myresolver"
 
   mqtt:
     image: eclipse-mosquitto
