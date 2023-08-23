@@ -32,7 +32,7 @@ cameras:
   korytarz:
     ffmpeg:
       output_args:
-          detect: -vf transpose=1 -f rawvideo -pix_fmt yuv420p
+        detect: -vf transpose=1 -f rawvideo -pix_fmt yuv420p
 
       inputs:
         - path: rtsp://{FRIGATE_KORYTARZ_RTSP}
