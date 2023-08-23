@@ -26,7 +26,7 @@ services:
         - "traefik.docker.network=system_default"
         - "traefik.port=80"
         - "traefik.http.services.pad.loadbalancer.server.port=9001"
-        - "traefik.http.routers.pad.rule=Host(`pad.apps.hskrk.pl`)"
+        - "traefik.http.routers.pad.rule=Host(`pad.hskrk.pl`)"
         - "traefik.http.routers.pad.tls=true"
         - "traefik.http.routers.pad.tls.certresolver=myresolver"
 
