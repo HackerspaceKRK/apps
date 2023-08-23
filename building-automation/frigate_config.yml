@@ -76,7 +76,7 @@ record:
   # Optional: Enable recording (default: shown below)
   # WARNING: If recording is disabled in the config, turning it on via
   #          the UI or MQTT later will have no effect.
-  enabled: False
+  enabled: True
   # Optional: Number of minutes to wait between cleanup runs (default: shown below)
   # This can be used to reduce the frequency of deleting recording segments from disk if you want to minimize i/o
   expire_interval: 60
