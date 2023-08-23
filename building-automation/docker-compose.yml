@@ -52,6 +52,8 @@ services:
 
   frigate:
     restart: unless-stopped
+    networks:
+      - system_default
     image: ghcr.io/blakeblackshear/frigate:stable
     shm_size: "512mb" # update for your cameras based on calculation above
     devices:
