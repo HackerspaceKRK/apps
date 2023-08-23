@@ -18,7 +18,7 @@ services:
       DB_NAME: etherpad
       DB_PORT: 3306
       DB_USER: root
-      DB_PASS: example
+      DB_PASS: ${MARIA_ROOT_PASSWORD}
       LOGLEVEL: DEBUG
     deploy:
       labels:
@@ -26,7 +26,7 @@ services:
         - "traefik.docker.network=system_default"
         - "traefik.port=80"
         - "traefik.http.services.pad.loadbalancer.server.port=9001"
-        - "traefik.http.routers.pad.rule=Host(`pad.apps.hskrk.pl`)"
+        - "traefik.http.routers.pad.rule=Host(`pad.hskrk.pl`)"
         - "traefik.http.routers.pad.tls=true"
         - "traefik.http.routers.pad.tls.certresolver=myresolver"
 
@@ -36,7 +36,7 @@ services:
     networks:
       - pad
     environment:
-      MARIADB_ROOT_PASSWORD: example
+      MARIADB_ROOT_PASSWORD: ${MARIA_ROOT_PASSWORD}
     volumes:
       - etherpad_db:/var/lib/mysql
 
