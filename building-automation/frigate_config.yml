@@ -70,8 +70,6 @@ detectors:
   cpu1:
     type: cpu
     num_threads: 3
-ffmpeg:
-  hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
 
 # NOTE: Can be overridden at the camera level
 record:
