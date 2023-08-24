@@ -14,6 +14,6 @@ services:
         - "traefik.http.routers.netbootxyz.middlewares=authentik@docker"
         - "traefik.http.routers.netbootxyz.tls=true"
         - "traefik.http.routers.netbootxyz.tls.certresolver=myresolver"
-volume:
+volumes:
   netbootxyz-config:
   netbootxyz-assets:
