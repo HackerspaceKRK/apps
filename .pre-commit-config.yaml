@@ -19,3 +19,20 @@ repos:
     hooks:
       - id: markdownlint-fix
       - id: markdownlint
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.24.1
+    hooks:
+      - id: check-github-workflows
+      - name: Validate docker-compose.yml
+        id: check-jsonschema
+        # match docker-compose.yml or docker-compose.yaml
+        files: docker-compose\.ya?ml$
+        args: ["--schemafile", "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"]
+      - name: Validate prometheus.yml
+        id: check-jsonschema
+        files: services-monitoring/prometheus/prometheus\.yml$
+        args: ["--schemafile", "https://json.schemastore.org/prometheus.json"]
+      - name: Validate traefik.yml
+        id: check-jsonschema
+        files: system/traefik\.yml$
+        args: ["--schemafile", "https://json.schemastore.org/traefik-v2.json"]
