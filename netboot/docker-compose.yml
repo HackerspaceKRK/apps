@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  netbootxyz:
+    image: ghcr.io/netbootxyz/netbootxyz
+    volumes:
+      - netbootxyz-config:/config
+      - netbootxyz-assets:/assets
+    ports:
+      - 69:69/udp # TFTP
+    deploy:
+      labels:
+        - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
+        - "traefik.http.routers.netbootxyz.rule=Host(`netbootxyz.apps.hskrk.pl`)"
+        - "traefik.http.routers.netbootxyz.middlewares=authentik@docker"
+        - "traefik.http.routers.netbootxyz.tls=true"
+        - "traefik.http.routers.netbootxyz.tls.certresolver=myresolver"
+volume:
+  netbootxyz-config:
+  netbootxyz-assets:
