@@ -7,6 +7,10 @@ services:
       - netbootxyz-assets:/assets
     ports:
       - 69:69/udp # TFTP
+      # ephemeral range
+      - 33000-33200:33000-33200/udp # iPXE
+    environment:
+      - ENV_TFTPD_OPTS="-R 33000:33200"
     deploy:
       labels:
         - "traefik.enable=true"
