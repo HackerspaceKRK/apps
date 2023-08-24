@@ -2,7 +2,6 @@ version: '3.8'
 services:
   netbootxyz:
     image: ghcr.io/netbootxyz/netbootxyz
-    environment:
     volumes:
       - netbootxyz-config:/config
       - netbootxyz-assets:/assets
