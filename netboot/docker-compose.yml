@@ -9,6 +9,8 @@ services:
       - 69:69/udp # TFTP
     deploy:
       labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
         - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
         - "traefik.http.routers.netbootxyz.rule=Host(`netbootxyz.apps.hskrk.pl`)"
         - "traefik.http.routers.netbootxyz.middlewares=authentik@docker"
