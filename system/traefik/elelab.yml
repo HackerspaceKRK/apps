@@ -11,7 +11,7 @@ http:
     spectrum-analyzer-wss-service:
       loadBalancer:
         servers:
-          - url: "http://10.12.10.144:5900"
+          - url: "ws://10.12.10.144:5900"
 
   routers:
     oscilloscope-router:
