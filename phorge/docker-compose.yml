@@ -12,12 +12,19 @@ services:
       - BASE_URI=phorge.apps.hskrk.pl
       - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
       - PROTOCOL=https
+      - MINIO_SERVER=minio
+      - MINIO_PORT=9000
+      - MINIO_BUCKET=phorge
+      - MINIO_SERVER_ACCESS_KEY_FILE=/run/secrets/phorge_minio_access_key
+      - MINIO_SERVER_SECRET_KEY_FILE=/run/secrets/phorge_minio_secret_key
     volumes:
       - ph-repo:/var/repo
     secrets:
       - phorge_mysql_password
       - source: phorge_mailers_config
         target: /tmp/phorge-mailers.json
+      - phorge_minio_access_key
+      - phorge_minio_secret_key
     healthcheck:
       test: ["CMD", "curl", "-H", "Host: phorge.apps.hskrk.pl", "http://localhost:80/status"]
       interval: 10s
@@ -57,6 +64,10 @@ secrets:
     external: true
   phorge_mailers_config:
     external: true
+   phorge_minio_access_key:
+    external: true
+  phorge_minio_secret_key:
+    external: true
 configs:
   mysql_config:
     file: ./mysql-config.cnf
@@ -68,3 +79,6 @@ networks:
     external: true
   phorge_default:
     external: false
+  minio:
+    external: true
+    name: minio
