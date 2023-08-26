@@ -14,9 +14,18 @@ services:
       - traefik_certificates:/traefik/acme
       - traefik_letsencrypt:/letsencrypt"
     ports:
-      - "80:80"
-      - "443:443"
-      - "5900:5900"
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+      - target: 5900
+        published: 5900
+        protocol: tcp
+        mode: host
     deploy:
       labels:
         - "traefik.enable=true"
