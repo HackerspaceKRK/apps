@@ -4,7 +4,6 @@ http:
       loadBalancer:
         servers:
           - url: "https://10.12.4.41"
-        serversTransport: "tls"
 
   routers:
     ldap2:
