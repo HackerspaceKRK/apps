@@ -36,7 +36,7 @@ http:
         - authentik@docker
     spectrum-analyzer-wss-router:
       entryPoints:
-        - "wss-sa"
+        - "sa-wss"
       service: spectrum-analyzer-wss-service
       rule: "Host(`sa.at.hskrk.pl`) && Port(`5900`)"
       tls:
