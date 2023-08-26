@@ -1,6 +1,9 @@
 api:
   insecure: true
 
+serversTransport:
+  insecureSkipVerify: true
+
 providers:
   docker:
     exposedByDefault: false

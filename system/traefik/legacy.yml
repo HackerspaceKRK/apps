@@ -4,9 +4,7 @@ http:
       loadBalancer:
         servers:
           - url: "https://10.12.4.41"
-        scheme: https
-        tls:
-          insecureSkipVerify: true
+        serversTransport: "tls"
 
   routers:
     ldap2:
