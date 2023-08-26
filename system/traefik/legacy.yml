@@ -8,7 +8,6 @@ http:
   routers:
     ldap2:
       entryPoints:
-        - "web"
         - "websecure"
       service: ldap2
       rule: "Host(`ldap2.at.hskrk.pl`)"
