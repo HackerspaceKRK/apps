@@ -3,7 +3,7 @@ http:
     ldap2:
       loadBalancer:
         servers:
-          - url: "http://10.12.4.41"
+          - url: "https://10.12.4.41"
 
   routers:
     ldap2:
