@@ -18,4 +18,3 @@ http:
         certResolver: myresolver
       middlewares:
         - authentik@docker
-
