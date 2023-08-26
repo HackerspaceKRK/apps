@@ -38,7 +38,7 @@ http:
       entryPoints:
         - "sa-wss"
       service: spectrum-analyzer-wss-service
-      rule: "Host(`sa.at.hskrk.pl`) && Port(`5900`)"
+      rule: "Host(`sa.at.hskrk.pl`)"
       tls:
         certResolver: myresolver
       middlewares:
