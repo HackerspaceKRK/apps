@@ -1,0 +1,18 @@
+http:
+  services:
+    ldap2:
+      loadBalancer:
+        servers:
+          - url: "http://10.12.4.41"
+
+  routers:
+    ldap2:
+      entryPoints:
+        - "web"
+        - "websecure"
+      service: ldap2
+      rule: "Host(`ldap2.at.hskrk.pl`)"
+      tls:
+        certResolver: myresolver
+      middlewares:
+        - authentik@docker
