@@ -39,3 +39,8 @@ repos:
         files: system/traefik\.yml$
         # https://json.schemastore.org/traefik-v2.json
         args: ["--schemafile", "./.schemas/traefik-v2.json"]
+      - name: Validate traefik file provider
+        id: check-jsonschema
+        files: system/traefik/(.*)\.yml$
+        # https://json.schemastore.org/traefik-v2.json
+        args: ["--schemafile", "./.schemas/traefik-v2-file-provider.json"]
