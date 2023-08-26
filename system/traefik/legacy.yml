@@ -4,6 +4,9 @@ http:
       loadBalancer:
         servers:
           - url: "https://10.12.4.41"
+        scheme: https
+        tls:
+          insecureSkipVerify: true
 
   routers:
     ldap2:
@@ -15,3 +18,4 @@ http:
         certResolver: myresolver
       middlewares:
         - authentik@docker
+
