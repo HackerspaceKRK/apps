@@ -8,10 +8,13 @@ http:
       loadBalancer:
         servers:
           - url: "http://10.12.10.144"
+
+tcp:
+  services:
     spectrum-analyzer-wss-service:
       loadBalancer:
         servers:
-          - url: "http://10.12.10.144:5900"
+          - address: "10.12.10.144:5900"
 
   routers:
     oscilloscope-router:
