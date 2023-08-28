@@ -67,8 +67,8 @@ services:
       - FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP=${FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP}
       - FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP=${FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP}
     ports:
-      - target: 8553 # WebRTC
-        published: 8553
+      - target: 8555 # WebRTC
+        published: 8555
         protocol: tcp
         mode: host
     volumes:
