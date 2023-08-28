@@ -80,7 +80,7 @@ services:
         tmpfs:
           size: 1000000000
       - type: tmpfs
-        target: /tmp/shm # Frigate requires a lot of SHM, but Swarm does not support it yet, so I present you with a `hack`
+        target: /dev/shm # Frigate requires a lot of SHM, but Swarm does not support it yet, so I present you with a `hack`
         tmpfs:
           size: 1000000000
     deploy:
