@@ -128,6 +128,28 @@ services:
         - "traefik.http.routers.snmp-exporter.tls.certresolver=myresolver"
         - "traefik.http.routers.snmp-exporter.middlewares=authentik@docker"
 
+  backblaze-monitoring:
+    image: docker.io/molu8bits/s3bucket_exporter:0.3
+    restart: always
+    networks:
+      - services-monitoring_default
+
+    environment:
+      S3_ENDPOINT: https://s3.us-east-005.backblazeb2.com
+      LISTEN_PORT: ":9655"
+      S3_ACCESS_KEY: ${B2_S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${B2_S3_SECRET_KEY}
+      S3_NAME: hskrk-backups
+      S3_REGION: us-east-1
+      S3_DISABLE_SSL: "False"
+      S3_DISABLE_ENDPOINT_HOST_PREFIX: "True"
+      S3_FORCE_PATH_STYLE: "True"
+      LOG_LEVEL: Info
+    healthcheck:
+      test: curl -s -f http://localhost:9655/metrics
+      timeout: 30s
+      interval: 2m
+      retries: 3
 
   promtail:
     image: grafana/promtail:2.6.1
