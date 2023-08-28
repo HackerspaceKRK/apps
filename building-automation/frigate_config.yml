@@ -65,10 +65,10 @@ cameras:
         roles:
           - detect
           - record
-  magazynek1:
+  magazynek:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/magazynek1
+        - path: rtsp://127.0.0.1:8554/magazynek
           input_args: preset-rtsp-restream-low-latency
           roles:
             - detect
