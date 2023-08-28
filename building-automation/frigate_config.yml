@@ -1,6 +1,3 @@
-mqtt:
-  enabled: false
-
 go2rtc:
   webrtc:
     candidates:
@@ -8,15 +5,14 @@ go2rtc:
       - 45.66.23.243:8555
       - stun:8555
   streams:
-    lab_elektroniczny: ["rtsp://{FRIGATE_ELAB_RTSP}"]
-    softroom: ["rtsp://{FRIGATE_SOFTROOM_RTSP}"]
-    hardroom_na_drzwi: ["rtsp://{FRIGATE_HARDROOM_NA_DRZWI_RTSP}"]
-    hardroom_od_drzwi: ["rtsp://{FRIGATE_HARDROOM_OD_DRZWI_RTSP}"]
-    korytarz:
-      ["ffmpeg:rtsp://{FRIGATE_KORYTARZ_RTSP}#video=h264#rotate=90#hardware"]
-    korytarz_wyjscie: ["rtsp://{FRIGATE_KORYTARZ_WYJSCIE_RTSP}"]
-    magazynek: ["rtsp://{FRIGATE_MAGAZYNEK_RTSP}"]
-    magazynek2: ["rtsp://{FRIGATE_MAGAZYNEK2_RTSP}"]
+    lab_elektroniczny: rtsp://{FRIGATE_ELAB_RTSP}
+    softroom: rtsp://{FRIGATE_SOFTROOM_RTSP}
+    hardroom_od_drzwi: rtsp://{FRIGATE_HARDROOM_OD_DRZWI_RTSP}
+    hardroom_na_drzwi: rtsp://{FRIGATE_HARDROOM_NA_DRZWI_RTSP}
+    korytarz: ffmpeg:rtsp://{FRIGATE_KORYTARZ_RTSP}#video=h264#rotate=90
+    korytarz_wyjscie: ffmpeg:rtsp://{FRIGATE_KORYTARZ_WYJSCIE_RTSP}#video=h264#rotate=90
+    magazynek_od_drzwi: rtsp://{FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP}
+    magazynek_na_drzwi: ffmpeg:http://{FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP}#video=h264
 
 cameras:
   lab_elektroniczny:
@@ -35,14 +31,6 @@ cameras:
           roles:
             - detect
             - record
-  hardroom_na_drzwi:
-    ffmpeg:
-      inputs:
-        - path: rtsp://127.0.0.1:8554/hardroom_na_drzwi
-          input_args: preset-rtsp-restream-low-latency
-          roles:
-            - detect
-            - record
   hardroom_od_drzwi:
     ffmpeg:
       inputs:
@@ -51,47 +39,65 @@ cameras:
           roles:
             - detect
             - record
+  hardroom_na_drzwi:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/hardroom_na_drzwi
+          input_args: preset-rtsp-restream-low-latency
+          roles:
+            - detect
+            - record
   korytarz:
     ffmpeg:
-      - path: rtsp://127.0.0.1:8554/hardroom_od_drzwi
-        input_args: preset-rtsp-restream-low-latency
-        roles:
-          - detect
-          - record
+      inputs:
+        - path: rtsp://127.0.0.1:8554/korytarz
+          input_args: preset-rtsp-restream-low-latency
+          roles:
+            - detect
+            - record
   korytarz_wyjscie:
     ffmpeg:
-      - path: rtsp://127.0.0.1:8554/korytarz_wyjscie
-        input_args: preset-rtsp-restream-low-latency
-        roles:
-          - detect
-          - record
-  magazynek:
-    ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/magazynek
+        - path: rtsp://127.0.0.1:8554/korytarz_wyjscie
           input_args: preset-rtsp-restream-low-latency
           roles:
             - detect
             - record
-  magazynek2:
+  magazynek_od_drzwi:
     ffmpeg:
       inputs:
-        - path: rtsp://127.0.0.1:8554/magazynek2
+        - path: rtsp://127.0.0.1:8554/magazynek_od_drzwi
           input_args: preset-rtsp-restream-low-latency
           roles:
             - detect
             - record
+  magazynek_na_drzwi:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/magazynek_na_drzwi
+          input_args: preset-rtsp-restream-low-latency
+          roles:
+            - detect
+            - record
+
+mqtt:
+  enabled: False
+
+telemetry:
+  version_check: False
 
 detectors:
   cpu1:
     type: cpu
-    num_threads: 3
+    num_threads: 16
 
-# NOTE: Can be overridden at the camera level
+detect:
+  fps: 2
+
+snapshots:
+  enabled: True
+
 record:
-  # Optional: Enable recording (default: shown below)
-  # WARNING: If recording is disabled in the config, turning it on via
-  #          the UI or MQTT later will have no effect.
   enabled: True
   # Optional: Number of minutes to wait between cleanup runs (default: shown below)
   # This can be used to reduce the frequency of deleting recording segments from disk if you want to minimize i/o
