@@ -96,6 +96,6 @@ scrape_configs:
         labels:
           device: power-meter
   - job_name: 'backblaze'
-    scrape_interval: 1m
+    scrape_interval: 10m
     static_configs:
       - targets: ['backblaze-monitoring:9655']
