@@ -91,7 +91,7 @@ services:
       - AUTHENTIK_TOKEN=file:///run/secrets/authentik_token
       - AUTHENTIK_HOST_BROWSER=https://auth.apps.hskrk.pl
       - AUTHENTIK_DEBUG=true
-      - AUTHENTIK_REDIS__HOST=redis
+      - AUTHENTIK_REDIS__HOST=redis:6379
     depends_on:
       - authentik
     deploy:
