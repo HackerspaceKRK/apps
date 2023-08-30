@@ -82,7 +82,7 @@ services:
       - authentik_token
 
   authentik-proxy:
-    image: ghcr.io/goauthentik/proxy
+    image: ghcr.io/goauthentik/proxy:${AUTHENTIK_TAG:-2023.6.1}
     ports:
       - "9091:9000"
     environment:
@@ -91,6 +91,7 @@ services:
       - AUTHENTIK_TOKEN=file:///run/secrets/authentik_token
       - AUTHENTIK_HOST_BROWSER=https://auth.apps.hskrk.pl
       - AUTHENTIK_DEBUG=true
+      - AUTHENTIK_REDIS__HOST=redis
     depends_on:
       - authentik
     deploy:
