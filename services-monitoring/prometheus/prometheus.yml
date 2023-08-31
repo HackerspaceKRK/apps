@@ -95,6 +95,12 @@ scrape_configs:
       - targets: ['10.12.10.242']
         labels:
           device: power-meter
+  - job_name: 'smoke-sensor'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['10.12.10.192']
+        labels:
+          device: smoke-sensor
   - job_name: 'backblaze'
     scrape_interval: 10m
     static_configs:
