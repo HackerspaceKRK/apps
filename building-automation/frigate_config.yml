@@ -63,6 +63,7 @@ cameras:
           roles:
             - detect
             - record
+            - rtmp
   magazynek_od_drzwi:
     ffmpeg:
       inputs:
