@@ -12,6 +12,9 @@ services:
     image: ghcr.io/hackerspacekrk/spejstore:latest
     restart: always
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    secrets:
+      - spejstore_clientid
+      - spejstore_secret
     environment:
       SPEJSTORE_CLIENT_ID: $$(cat /run/secrets/spejstore_clientid)
       SPEJSTORE_SECRET: $$(cat /run/secrets/spejstore_secret)
@@ -31,5 +34,12 @@ services:
       - "traefik.http.routers.spejstore.middlewares=authentik@docker"
       - "traefik.http.routers.spejstore.tls=true"
       - "traefik.http.routers.spejstore.tls.certresolver=myresolver"
+
 volumes:
   spejstore-pg:
+
+secrets:
+  spejstore_secret:
+    external: true
+  spejstore_clientid:
+    external: true
