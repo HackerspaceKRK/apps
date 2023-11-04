@@ -5,9 +5,9 @@ services:
     build: postgres-hstore
     restart: always
     environment:
-     - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-     - spejstore-pg:/var/lib/postgresql/data
+      - spejstore-pg:/var/lib/postgresql/data
   web:
     image: ghcr.io/hackerspacekrk/spejstore:latest
     restart: always
