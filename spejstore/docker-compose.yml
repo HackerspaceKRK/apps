@@ -2,7 +2,6 @@ version: "3"
 services:
   db:
     image: ghcr.io/hackerspacekrk/spejstore/postgres-hstore:latest
-    build: postgres-hstore
     restart: always
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -18,8 +17,6 @@ services:
     environment:
       SPEJSTORE_CLIENT_ID: $$(cat /run/secrets/spejstore_clientid)
       SPEJSTORE_SECRET: $$(cat /run/secrets/spejstore_secret)
-    volumes:
-      - .:/code
     ports:
       - "8021:8000"
     depends_on:
