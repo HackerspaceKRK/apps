@@ -26,7 +26,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=system_default"
-      - "traefik.http.services.spejstore.loadbalancer.server.port=1880"
+      - "traefik.http.services.spejstore.loadbalancer.server.port=8021"
       - "traefik.http.routers.spejstore.rule=Host(`spejstore.apps.hskrk.pl`)"
       - "traefik.http.routers.spejstore.middlewares=authentik@docker"
       - "traefik.http.routers.spejstore.tls=true"
