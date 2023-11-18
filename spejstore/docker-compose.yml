@@ -46,7 +46,7 @@ secrets:
   spejstore_clientid:
     external: true
 
-networks:                                                                                               │
-  system_default:                                                                                       │
-    external: true                                                                                      │
-  spejstore:
+networks:
+  system_default:
+    external: true
+  pad:
