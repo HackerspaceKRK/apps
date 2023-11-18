@@ -7,16 +7,21 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - spejstore-pg:/var/lib/postgresql/data
+    networks:
+      - spejstore
   web:
     image: ghcr.io/hackerspacekrk/spejstore:latest
     restart: always
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - system_default
+      - spejstore
     secrets:
       - spejstore_clientid
       - spejstore_secret
     environment:
-      SPEJSTORE_CLIENT_ID: $$(cat /run/secrets/spejstore_clientid)
-      SPEJSTORE_SECRET: $$(cat /run/secrets/spejstore_secret)
+      SPEJSTORE_CLIENT_ID: $(cat /run/secrets/spejstore_clientid)
+      SPEJSTORE_SECRET: $(cat /run/secrets/spejstore_secret)
     ports:
       - "8021:8000"
     depends_on:
@@ -40,3 +45,8 @@ secrets:
     external: true
   spejstore_clientid:
     external: true
+
+networks:                                                                                               │
+  system_default:                                                                                       │
+    external: true                                                                                      │
+  spejstore:
