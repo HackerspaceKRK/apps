@@ -28,14 +28,15 @@ services:
       - db
     env_file:
       - spejstore.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=system_default"
-      - "traefik.http.services.spejstore.loadbalancer.server.port=8021"
-      - "traefik.http.routers.spejstore.rule=Host(`spejstore.apps.hskrk.pl`)"
-      - "traefik.http.routers.spejstore.middlewares=authentik@docker"
-      - "traefik.http.routers.spejstore.tls=true"
-      - "traefik.http.routers.spejstore.tls.certresolver=myresolver"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.spejstore.loadbalancer.server.port=8021"
+        - "traefik.http.routers.spejstore.rule=Host(`spejstore.apps.hskrk.pl`)"
+        - "traefik.http.routers.spejstore.middlewares=authentik@docker"
+        - "traefik.http.routers.spejstore.tls=true"
+        - "traefik.http.routers.spejstore.tls.certresolver=myresolver"
 
 volumes:
   spejstore-pg:
