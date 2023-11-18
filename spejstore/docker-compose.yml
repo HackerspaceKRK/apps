@@ -50,4 +50,4 @@ secrets:
 networks:
   system_default:
     external: true
-  pad:
+  spejstore:
