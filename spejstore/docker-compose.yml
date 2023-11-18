@@ -20,8 +20,8 @@ services:
       - spejstore_clientid
       - spejstore_secret
     environment:
-      SPEJSTORE_CLIENT_ID: $(cat /run/secrets/spejstore_clientid)
-      SPEJSTORE_SECRET: $(cat /run/secrets/spejstore_secret)
+      SPEJSTORE_CLIENT_ID: ${SPEJSTORE_CLIENTID}
+      SPEJSTORE_SECRET: ${SPEJSTORE_SECRET}
     ports:
       - "8021:8000"
     depends_on:
@@ -50,4 +50,4 @@ secrets:
 networks:
   system_default:
     external: true
-  pad:
+  spejstore:
