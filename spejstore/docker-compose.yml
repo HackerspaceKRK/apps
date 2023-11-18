@@ -22,8 +22,6 @@ services:
     environment:
       SPEJSTORE_CLIENT_ID: ${SPEJSTORE_CLIENTID}
       SPEJSTORE_SECRET: ${SPEJSTORE_SECRET}
-    ports:
-      - "8021:8000"
     depends_on:
       - db
     env_file:
@@ -32,9 +30,8 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
-        - "traefik.http.services.spejstore.loadbalancer.server.port=8021"
+        - "traefik.http.services.spejstore.loadbalancer.server.port=8000"
         - "traefik.http.routers.spejstore.rule=Host(`spejstore.apps.hskrk.pl`)"
-        - "traefik.http.routers.spejstore.middlewares=authentik@docker"
         - "traefik.http.routers.spejstore.tls=true"
         - "traefik.http.routers.spejstore.tls.certresolver=myresolver"
 
