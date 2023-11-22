@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   statusweb:
-    image: ghcr.io/hackerspacekrk/status:latest
+    image: ghcr.io/hackerspacekrk/status:main
     restart: always
     networks:
       - system_default
