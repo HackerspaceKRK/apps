@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  statusweb:
+    image: ghcr.io/hackerspacekrk/status:main
+    restart: unless-stopped
+    networks:
+      - system_default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.statusweb.loadbalancer.server.port=3000"
+        - "traefik.http.routers.statusweb.rule=Host(`status.apps.hskrk.pl`)"
+        - "traefik.http.routers.statusweb.middlewares=authentik@docker"
+        - "traefik.http.routers.statusweb.tls=true"
+        - "traefik.http.routers.statusweb.tls.certresolver=myresolver"
+
+networks:
+  system_default:
+    external: true
