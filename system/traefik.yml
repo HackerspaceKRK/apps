@@ -1,6 +1,8 @@
 api:
   insecure: true
 
+accessLog: {}
+
 serversTransport:
   insecureSkipVerify: true
 
