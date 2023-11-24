@@ -28,6 +28,8 @@ services:
       restart_policy:
         condition: on-failure
         delay: 15s
+    networks:
+      - system_default
     secrets:
       - source: phabricator-tele-notifier.yaml
         target: /run/secrets/config.yaml
@@ -49,4 +51,7 @@ secrets:
 
 configs:
   phabricator-tele-notifier.yaml:
+    external: true
+networks:
+  system_default:
     external: true
