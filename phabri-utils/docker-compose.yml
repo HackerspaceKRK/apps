@@ -21,7 +21,7 @@ services:
         max_attempts: 5
 
   tele_notifier:
-    image: ghcr.io/hbrylkowski/phabricatortelenotifier:master
+    image: ghcr.io/hackerspacekrk/phabricatortelenotifier:latest
     restart: unless-stopped
     deploy:
       replicas: 1
