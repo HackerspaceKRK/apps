@@ -28,18 +28,18 @@ services:
       restart_policy:
         condition: on-failure
         delay: 15s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.tele_notifier.loadbalancer.server.port=8080"
+        - "traefik.http.routers.tele_notifier.rule=Host(`telenotifier.apps.hskrk.pl`)  && ClientIP(`10.0.0.0/8`)"
+        - "traefik.http.routers.tele_notifier.tls=true"
+        - "traefik.http.routers.tele_notifier.tls.certresolver=myresolver"
     networks:
       - system_default
     secrets:
       - source: phabricator-tele-notifier.yaml
         target: /run/secrets/config.yaml
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=system_default"
-      - "traefik.http.services.tele_notifier.loadbalancer.server.port=8080"
-      - "traefik.http.routers.tele_notifier.rule=Host(`telenotifier.apps.hskrk.pl`)  && ClientIP(`10.0.0.0/8`)"
-      - "traefik.http.routers.tele_notifier.tls=true"
-      - "traefik.http.routers.tele_notifier.tls.certresolver=myresolver"
 
 secrets:
   telegram_token:
