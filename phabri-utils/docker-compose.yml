@@ -36,10 +36,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=system_default"
-      - "traefik.http.routers.telenotifier.rule=Host(`telenotifier.apps.hskrk.pl`)  && ClientIP(`10.0.0.0/8`)"
-      - "traefik.http.services.telenotifier.loadbalancer.server.port=8080"
-      - "traefik.http.routers.telenotifier.tls=true"
-      - "traefik.http.routers.telenotifier.tls.certresolver=myresolver"
+      - "traefik.http.services.tele_notifier.loadbalancer.server.port=8080"
+      - "traefik.http.routers.tele_notifier.rule=Host(`telenotifier.apps.hskrk.pl`)  && ClientIP(`10.0.0.0/8`)"
+      - "traefik.http.routers.tele_notifier.tls=true"
+      - "traefik.http.routers.tele_notifier.tls.certresolver=myresolver"
 
 secrets:
   telegram_token:
