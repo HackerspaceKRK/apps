@@ -105,3 +105,12 @@ scrape_configs:
     scrape_interval: 10m
     static_configs:
       - targets: ['backblaze-monitoring:9655']
+  - job_name: 'elelab-ups'
+    scrape_interval: 15s
+    metrics_path: /ups_metrics
+    static_configs:
+      - targets: ['10.12.10.54:9199']
+        labels:
+          ups:  "elelab"
+    params:
+      ups: [ "elelab" ]
