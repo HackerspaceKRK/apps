@@ -189,8 +189,7 @@ services:
     image: ghcr.io/curl/curl-container/curl:master
     environment:
       - HEALTHCHECKS_URL=${HEALTHCHECKS_URL}
-    command:
-      - -fsS --retry 3 ${HEALTHCHECKS_URL}
+    command: "-fsS ${HEALTHCHECKS_URL}"
     deploy:
       mode: replicated
       replicas: 0
