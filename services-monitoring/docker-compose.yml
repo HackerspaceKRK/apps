@@ -184,6 +184,21 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
 
+  healthchecks:
+    container_name: healthchecks_pinger
+    image: ghcr.io/curl/curl-container/curl:master
+    environment:
+      - HEALTHCHECKS_URL=${HEALTHCHECKS_URL}
+    command:
+      - -fsS --retry 3 ${HEALTHCHECKS_URL}
+    deploy:
+      mode: replicated
+      replicas: 0
+      labels:
+        - "swarm.cronjob.enable=true"
+        - "swarm.cronjob.schedule=* * * * *"
+        - "swarm.cronjob.skip-running=true"
+
 secrets:
   authentik_key.pem:
     external: true
