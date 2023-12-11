@@ -184,6 +184,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
 
+  healthchecks:
+    container_name: healthchecks_pinger
+    image: ghcr.io/curl/curl-container/curl:master
+    environment:
+      - HEALTHCHECKS_URL=${HEALTHCHECKS_URL}
+    command:
+      - -fsS --retry 3 ${HEALTHCHECKS_URL}
+
 secrets:
   authentik_key.pem:
     external: true
