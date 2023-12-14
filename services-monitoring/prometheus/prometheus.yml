@@ -114,3 +114,9 @@ scrape_configs:
           ups:  "elelab"
     params:
       ups: [ "elelab" ]
+
+  - job_name: 'sdr_power'
+    scrape_interval: 1m
+    metrics_path: /metrics
+    static_configs:
+      - targets: [ '10.12.10.68:2112' ]
