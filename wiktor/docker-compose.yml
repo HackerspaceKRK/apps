@@ -14,6 +14,19 @@ services:
         - "traefik.http.routers.statusweb.middlewares=authentik@docker"
         - "traefik.http.routers.statusweb.tls=true"
         - "traefik.http.routers.statusweb.tls.certresolver=myresolver"
+  finanse:
+    image: ghcr.io/hackerspacekrk/raport-next:main
+    restart: unless-stopped
+    networks:
+      - system_default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.finanse.loadbalancer.server.port=3000"
+        - "traefik.http.routers.finanse.rule=Host(`finanse.apps.hskrk.pl`)"
+        - "traefik.http.routers.finanse.tls=true"
+        - "traefik.http.routers.finanse.tls.certresolver=myresolver"
 
 networks:
   system_default:
