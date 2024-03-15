@@ -1,14 +1,20 @@
 version: "3.7"
 services:
   db:
-    image: ghcr.io/hackerspacekrk/spejstore/postgres-hstore:latest
-    restart: always
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
+    image: postgres:15.4
+    restart: unless-stopped
     volumes:
-      - spejstore-pg:/var/lib/postgresql/data
-    networks:
-      - spejstore
+      - spejstore-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres #TODO CHANGE
+      POSTGRES_PASSWORD: postgres #TODO CHANGE
+      POSTGRES_DB: postgres #TODO CHANGE
+    healthcheck:
+      #CHANGE 1: this command checks if the database is ready, right on the source db server
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 5
   web:
     image: ghcr.io/hackerspacekrk/spejstore:latest
     restart: always
