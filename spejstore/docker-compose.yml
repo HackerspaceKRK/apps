@@ -46,7 +46,7 @@ services:
         - "traefik.http.routers.spejstore.tls.certresolver=myresolver"
 
 volumes:
-  spejstore-pg:
+  spejstore-db:
 
 secrets:
   spejstore_secret:
