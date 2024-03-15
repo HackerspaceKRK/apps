@@ -36,8 +36,6 @@ services:
       SPEJSTORE_ENV: ${SPEJSTORE_ENV}
     depends_on:
       - db
-    env_file:
-      - spejstore.env
     deploy:
       labels:
         - "traefik.enable=true"
