@@ -6,9 +6,9 @@ services:
     volumes:
       - spejstore-db:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres #TODO CHANGE
-      POSTGRES_PASSWORD: postgres #TODO CHANGE
-      POSTGRES_DB: postgres #TODO CHANGE
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB} #TODO CHANGE
     healthcheck:
       #CHANGE 1: this command checks if the database is ready, right on the source db server
       test: ["CMD-SHELL", "pg_isready -d postgres -U postgres"]
@@ -28,6 +28,12 @@ services:
     environment:
       SPEJSTORE_CLIENT_ID: ${SPEJSTORE_CLIENTID}
       SPEJSTORE_SECRET: ${SPEJSTORE_SECRET}
+      SPEJSTORE_DB_NAME: ${POSTGRES_NAME}
+      SPEJSTORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SPEJSTORE_DB_USER: ${POSTGRES_USER}
+      SPEJSTORE_DB_HOST: ${POSTGRES_DB}
+      SPEJSTORE_ALLOWED_HOSTS: ${SPEJSTORE_ALLOWED_HOSTS}
+      SPEJSTORE_ENV: ${SPEJSTORE_ENV}
     depends_on:
       - db
     env_file:
