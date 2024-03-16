@@ -60,3 +60,5 @@ networks:
   system_default:
     external: true
   spejstore:
+    internal: true
+    external: false
