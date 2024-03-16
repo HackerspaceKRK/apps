@@ -18,6 +18,8 @@ services:
       timeout: 1s
       retries: 5
   web:
+    volumes:
+      - build_static:/code/build_static
     restart: unless-stopped
     command: bash -c "python manage.py collectstatic --no-input --clear && python manage.py migrate && gunicorn --workers 1 --threads 4 -b 0.0.0.0:8000 --capture-output --error-logfile - --access-logfile - spejstore.wsgi:application"
     image: ghcr.io/hackerspacekrk/spejstore:master
@@ -49,6 +51,7 @@ services:
 
 volumes:
   spejstore-db:
+  build_static:
 
 secrets:
   spejstore_secret:
