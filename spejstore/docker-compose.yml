@@ -3,6 +3,8 @@ services:
   db:
     image: postgres:15.4
     restart: unless-stopped
+    networks:
+      - spejstore
     volumes:
       - spejstore-db:/var/lib/postgresql/data
     environment:
