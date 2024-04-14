@@ -7,6 +7,9 @@ services:
     user: 1000:1000 # default
     environment:
       - INIT_ASSETS=1 # default
+    networks:
+      - homer
+      - system_default
     deploy:
       labels:
         - "traefik.enable=true"
