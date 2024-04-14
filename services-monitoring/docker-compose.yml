@@ -96,7 +96,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=system_default"
       - "traefik.http.services.pushgateway.loadbalancer.server.port=9091"
-      - "traefik.http.routers.pushgateway.rule=Host(`pushgateway.apps.hskrk.pl`)"
+      - "traefik.http.routers.pushgateway.rule=Host(`pushgateway.apps.hskrk.pl`) && ClientIP(`10.0.0.0/8`)"
       - "traefik.http.routers.pushgateway.tls=true"
       - "traefik.http.routers.pushgateway.tls.certresolver=myresolver"
 
