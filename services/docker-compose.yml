@@ -1,5 +1,21 @@
 version: "3.8"
 services:
+  homer:
+    image: b4bz/homer
+    volumes:
+      - ./config/config.yml:/www/assets/config.yml
+    user: 1000:1000 # default
+    environment:
+      - INIT_ASSETS=1 # default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.port=80"
+        - "traefik.http.services.uslugi.loadbalancer.server.port=8080"
+        - "traefik.http.routers.uslugi.rule=Host(`uslugi.hskrk.pl`)"
+        - "traefik.http.routers.uslugi.tls=true"
+        - "traefik.http.routers.uslugi.tls.certresolver=myresolver"
   etherpad:
     image: etherpad/etherpad:1.8.16
     ports:
