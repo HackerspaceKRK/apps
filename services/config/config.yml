@@ -51,13 +51,22 @@ colors:
 # Optional navbar
 # links: [] # Allows for navbar (dark mode, layout, and search) without any links
 links:
-  - name: "Contribute"
+  - name: "Czegoś brakuje?"
     icon: "fab fa-github"
-    url: "https://github.com/bastienwirtz/homer"
+    url: "https://github.com/HackerspaceKRK/apps/blob/main/services/config/config.yml"
     target: "_blank" # optional html a tag target attribute
   - name: "Wiki"
     icon: "fas fa-book"
-    url: "https://www.wikipedia.org/"
+    url: "https://phabricator.hskrk.pl/"
+  - name: "Kalendarz"
+    icon: "fas fa-calendar"
+    url: "https://www.meetup.com/hackerspacekrakow/"
+  - name: "Darowizny"
+    icon: "fas fa-coins"
+    url: "https://hackerspace-krk.pl/darowizny"
+  - name: "Kontakt"
+    icon: "fas fa-address-book"
+    url: "https://hackerspace-krk.pl/kontakt"
   # this will link to a second homer page that will load config from additional-page.yml and keep default config values as in config.yml file
   # see url field and assets/additional-page.yml.dist used in this example:
   #- name: "another page!"
