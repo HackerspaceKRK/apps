@@ -14,7 +14,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
-        - "traefik.port=80"
         - "traefik.http.services.landing.loadbalancer.server.port=8080"
         - "traefik.http.routers.landing.rule=Host(`landing.apps.hskrk.pl`)"
         - "traefik.http.routers.landing.tls=true"
