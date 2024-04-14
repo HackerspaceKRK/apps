@@ -80,6 +80,25 @@ services:
         - "traefik.http.routers.prometheus.tls=true"
         - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
         - "traefik.http.routers.prometheus.middlewares=authentik@docker"
+  pushgateway:
+    image: prom/pushgateway:latest
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    networks:
+      - services-monitoring_default
+      - system_default
+    command:
+      - '--log.level=info'
+      - '--web.enable-admin-api'
+      - '--web.enable-lifecycle'
+    labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.pushgateway.loadbalancer.server.port=9091"
+        - "traefik.http.routers.pushgateway.rule=Host(`pushgateway.apps.hskrk.pl`)"
+        - "traefik.http.routers.pushgateway.tls=true"
+        - "traefik.http.routers.pushgateway.tls.certresolver=myresolver"
 
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
