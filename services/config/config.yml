@@ -68,23 +68,6 @@ links:
 # First level array represent a group.
 # Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
 services:
-  # - name: "Wewnętrzne"
-  #   icon: "fas fa-cloud"
-  #   items:
-  #     - name: "Nodered"
-  #       logo: "assets/tools/sample.png"
-  #       subtitle: "Bookmark example"
-  #  
-  #  
-  #       url: "https://www.reddit.com/r/selfhosted/"
-  #       target: "_blank" # optional html a tag target attribute
-  #     - name: "Awesome app"
-  #       logo: "assets/tools/sample.png"
-  #       subtitle: "Bookmark example"
-  #  
-  #  
-  #       url: "https://www.reddit.com/r/selfhosted/"
-  #       target: "_blank" # optional html a tag target attribute
   - name: "Dashboardy"
     icon: "fas fa-cloud"
     items:
@@ -106,7 +89,7 @@ services:
       - name: "Grafana"
         icon: "fa-solid fa-chart-column"
         subtitle: "Wszelkie HSowe statystyki"
-        url: "https://www.reddit.com/r/selfhosted/"
+        url: "https://grafana.apps.hskrk.pl"
         target: "_blank" # optional html a tag target attribute
   - name: "Usługi"
     icon: "fas fa-cloud"
