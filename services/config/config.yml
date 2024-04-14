@@ -113,7 +113,6 @@ services:
     items:
       - name: "Nodered"
         icon: "fa fa-cloud-arrow-up"
-        subtitle: "HSowe miejsce na twoje pliki"
         url: "https://nodered.apps.hskrk.pl"
         target: "_blank" # optional html a tag target attribute
         # type: Ping
