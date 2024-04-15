@@ -120,3 +120,8 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets: [ '10.12.10.68:2112' ]
+  - job_name: 'pushgateway'
+    scrape_interval: 1m
+    metrics_path: /metrics
+    static_configs:
+      - targets: [ 'pushgateway:9091' ]
