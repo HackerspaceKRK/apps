@@ -101,6 +101,7 @@ services:
 
 volumes:
   nodered_data:
+  frigate_data:
   frigate_recordings:
 
 networks:
