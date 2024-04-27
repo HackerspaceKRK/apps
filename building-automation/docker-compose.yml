@@ -73,6 +73,7 @@ services:
         mode: host
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - frigate_data:/config
       - ./frigate_config.yml:/config/config.yml:ro
       - frigate_recordings:/media/frigate
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
