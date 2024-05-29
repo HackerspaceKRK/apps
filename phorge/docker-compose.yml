@@ -69,6 +69,7 @@ configs:
 volumes:
   phorge-database-volume:
   ph-repo:
+  ph-localstorage:
 networks:
   system_default:
     external: true
