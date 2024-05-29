@@ -12,19 +12,14 @@ services:
       - BASE_URI=phabricator.hskrk.pl
       - MAILERS_CONFIG_FILE=/tmp/phorge-mailers.json
       - PROTOCOL=https
-      - MINIO_SERVER=minio
-      - MINIO_PORT=9000
-      - MINIO_BUCKET=phorge
-      - MINIO_SERVER_ACCESS_KEY_FILE=/run/secrets/phorge_minio_access_key
-      - MINIO_SERVER_SECRET_KEY_FILE=/run/secrets/phorge_minio_secret_key
+      - LOCAL_DISK_STORAGE_PATH=/var/localstorage
     volumes:
       - ph-repo:/var/repo
+      - ph-localstorage:/var/localstorage
     secrets:
       - phorge_mysql_password
       - source: phorge_mailers_config
         target: /tmp/phorge-mailers.json
-      - phorge_minio_access_key
-      - phorge_minio_secret_key
     healthcheck:
       test: ["CMD", "curl", "-H", "Host: phabricator.hskrk.pl", "http://localhost:80/status"]
       interval: 10s
