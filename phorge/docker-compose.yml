@@ -59,10 +59,6 @@ secrets:
     external: true
   phorge_mailers_config:
     external: true
-  phorge_minio_access_key:
-    external: true
-  phorge_minio_secret_key:
-    external: true
 configs:
   mysql_config:
     file: ./mysql-config.cnf
