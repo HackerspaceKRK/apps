@@ -26,7 +26,7 @@ services:
       - LABELMAKER_CODE_PREFIX="https://spejstore.apps.hskrk.pl/"
     networks:
       - spejstore
-      - system-default
+      - system_default
     deploy:
       labels:
         - "traefik.enable=true"
