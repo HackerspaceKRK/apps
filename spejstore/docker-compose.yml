@@ -21,7 +21,7 @@ services:
     image: ghcr.io/hackerspacekrk/spejstore-labelmaker:master
     restart: unless-stopped
     environment:
-      - LABELMAKER_LABEL_SIZE=[80,40]
+      - LABELMAKER_LABEL_SIZE=[79,39]
       - LABELMAKER_IPP_PRINTER_URL=ipp://10.12.10.123:631/printers/Zebra_TLP2844
       - LABELMAKER_CODE_PREFIX=https://spejstore.apps.hskrk.pl/
     networks:
