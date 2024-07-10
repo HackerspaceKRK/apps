@@ -17,6 +17,24 @@ services:
       interval: 1s
       timeout: 1s
       retries: 5
+  labelmaker:
+    image: ghcr.io/hackerspacekrk/spejstore-labelmaker:master
+    restart: unless-stopped
+    environment:
+      - LABELMAKER_LABEL_SIZE=[80,40]
+      - LABELMAKER_IPP_PRINTER_URL=ipp://10.12.10.123:631/printers/Zebra_TLP2844
+      - LABELMAKER_CODE_PREFIX="https://spejstore.apps.hskrk.pl/"
+    networks:
+      - spejstore
+      - system-default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.spejstore-labelmaker.loadbalancer.server.port=4567"
+        - "traefik.http.routers.spejstore-labelmaker.rule=Host(`spejstore-labelmaker.apps.hskrk.pl`)"
+        - "traefik.http.routers.spejstore-labelmaker.tls=true"
+        - "traefik.http.routers.spejstore-labelmaker.tls.certresolver=myresolver"
   web:
     restart: unless-stopped
     command: bash -c "python manage.py collectstatic --no-input --clear && python manage.py migrate && gunicorn --workers 1 --threads 4 -b 0.0.0.0:8000 --capture-output --error-logfile - --access-logfile - spejstore.wsgi:application"
