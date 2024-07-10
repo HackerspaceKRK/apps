@@ -32,7 +32,7 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
         - "traefik.http.services.spejstore-labelmaker.loadbalancer.server.port=4567"
-        - "traefik.http.routers.spejstore-labelmaker.rule=Host(`spejstore-labelmaker.apps.hskrk.pl`)"
+        - "traefik.http.routers.spejstore-labelmaker.rule=Host(`spejstore-labelmaker.apps.hskrk.pl`)  && ClientIP(`10.0.0.0/8`)"
         - "traefik.http.routers.spejstore-labelmaker.tls=true"
         - "traefik.http.routers.spejstore-labelmaker.tls.certresolver=myresolver"
   web:
