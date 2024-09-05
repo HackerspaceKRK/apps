@@ -1,0 +1,69 @@
+version: '3'
+services:
+  database:
+    image: postgres:12-alpine
+    container_name: database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${PRETIX_DATABASE_USER}
+      - POSTGRES_PASSWORD=${PRETIX_DATABASE_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - pretix_backend
+  redis:
+    image: redis:latest
+    container_name: cache
+    ports:
+      - "6379:6379"
+    networks:
+      - pretix_backend
+    depends_on:
+      - database
+  pretix:
+    image: pretix/standalone:stable
+    container_name: pretix
+    depends_on:
+      - database
+      - redis
+    environment:
+      - PRETIX_PRETIX_INSTANCE_NAME=${PRETIX_PRETIX_INSTANCE_NAME}
+      - PRETIX_PRETIX_URL=${PRETIX_PRETIX_URL}
+      - PRETIX_PRETIX_CURRENCY=${PRETIX_PRETIX_CURRENCY}
+      - PRETIX_DATABASE_NAME=${PRETIX_DATABASE_NAME}
+      - PRETIX_DATABASE_USER=${PRETIX_DATABASE_USER}
+      - PRETIX_DATABASE_PASSWORD=${PRETIX_DATABASE_PASSWORD}
+      - PRETIX_DATABASE_HOST=${PRETIX_DATABASE_HOST}
+      - PRETIX_DJANGO_DEBUG=${PRETIX_DJANGO_DEBUG}
+      - PRETIX_MAIL_FROM=${PRETIX_MAIL_FROM}
+      - PRETIX_MAIL_HOST=${PRETIX_MAIL_HOST}
+      - PRETIX_MAIL_USER=${PRETIX_MAIL_USER}
+      - PRETIX_MAIL_PASSWORD=${PRETIX_MAIL_PASSWORD}
+      - PRETIX_MAIL_PORT=${PRETIX_MAIL_PORT}
+      - PRETIX_MAIL_TLS=${PRETIX_MAIL_TLS}
+    ports:
+      - "8000:80"
+    volumes:
+      - ./pretix.cfg:/etc/pretix/pretix.cfg
+      - data:/data
+    networks:
+      - pretix_backend
+      - system_default
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.landing.loadbalancer.server.port=80"
+        - "traefik.http.routers.landing.rule=Host(`bilety.apps.hskrk.pl`)"
+        - "traefik.http.routers.landing.tls=true"
+        - "traefik.http.routers.landing.tls.certresolver=myresolver"
+volumes:
+  data:
+  postgres:
+  src:
+
+networks:
+  system_default:
+    external: true
+  backend:
