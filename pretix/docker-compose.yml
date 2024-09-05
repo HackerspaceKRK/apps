@@ -23,7 +23,6 @@ services:
     image: pretix/standalone:stable
     depends_on:
       - database
-      - redis
     environment:
       - PRETIX_PRETIX_INSTANCE_NAME=${PRETIX_PRETIX_INSTANCE_NAME}
       - PRETIX_PRETIX_URL=${PRETIX_PRETIX_URL}
