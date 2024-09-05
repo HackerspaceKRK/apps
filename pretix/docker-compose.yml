@@ -50,10 +50,10 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=system_default"
-        - "traefik.http.services.landing.loadbalancer.server.port=80"
-        - "traefik.http.routers.landing.rule=Host(`bilety.apps.hskrk.pl`)"
-        - "traefik.http.routers.landing.tls=true"
-        - "traefik.http.routers.landing.tls.certresolver=myresolver"
+        - "traefik.http.services.pretix.loadbalancer.server.port=80"
+        - "traefik.http.routers.pretix.rule=Host(`bilety.apps.hskrk.pl`)"
+        - "traefik.http.routers.pretix.tls=true"
+        - "traefik.http.routers.pretix.tls.certresolver=myresolver"
 volumes:
   data:
   postgres:
