@@ -63,4 +63,4 @@ volumes:
 networks:
   system_default:
     external: true
-  backend:
+  pretix_backend:
