@@ -52,7 +52,6 @@ services:
         - "traefik.docker.network=system_default"
         - "traefik.http.services.pretix.loadbalancer.server.port=80"
         - "traefik.http.routers.pretix.rule=Host(`bilety.apps.hskrk.pl`)"
-        - "traefik.http.middlewares.pretix.addprefix.prefix=/hskrk"
         - "traefik.http.routers.pretix.tls=true"
         - "traefik.http.routers.pretix.tls.certresolver=myresolver"
 volumes:
