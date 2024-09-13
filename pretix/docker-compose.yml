@@ -19,7 +19,7 @@ services:
     networks:
       - pretix_backend
     depends_on:
-      - database
+      - database    
   pretix:
     image: pretix/standalone:stable
     depends_on:
@@ -55,6 +55,16 @@ services:
         - "traefik.http.routers.pretix.rule=Host(`bilety.apps.hskrk.pl`)"
         - "traefik.http.routers.pretix.tls=true"
         - "traefik.http.routers.pretix.tls.certresolver=myresolver"
+        - "ofelia.enabled=true"
+        - "ofelia.job-exec.datecron.schedule=@every 30m"
+        - "ofelia.job-exec.datecron.command=/usr/local/bin/pretix runperiodic"
+  ofelia:
+    image: mcuadros/ofelia:latest
+    depends_on:
+      - pretix
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 volumes:
   data:
   postgres:
