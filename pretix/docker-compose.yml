@@ -49,15 +49,15 @@ services:
       - system_default
     deploy:
       labels:
-        - "traefik.enable=true"
-        - "traefik.docker.network=system_default"
-        - "traefik.http.services.pretix.loadbalancer.server.port=80"
-        - "traefik.http.routers.pretix.rule=Host(`bilety.apps.hskrk.pl`)"
-        - "traefik.http.routers.pretix.tls=true"
-        - "traefik.http.routers.pretix.tls.certresolver=myresolver"
-        - "ofelia.enabled=true"
-        - "ofelia.job-exec.datecron.schedule=@every 30m"
-        - "ofelia.job-exec.datecron.command=/usr/local/bin/pretix runperiodic"
+        traefik.enable: "true"
+        traefik.docker.network: "system_default"
+        traefik.http.services.pretix.loadbalancer.server.port: "80"
+        traefik.http.routers.pretix.rule: "Host(`bilety.apps.hskrk.pl`)"
+        traefik.http.routers.pretix.tls: "true"
+        traefik.http.routers.pretix.tls.certresolver: "myresolver"
+        ofelia.enabled: "true"
+        ofelia.job-exec.datecron.schedule: "@every 30m"
+        ofelia.job-exec.datecron.command: "/usr/local/bin/pretix runperiodic"
   ofelia:
     image: mcuadros/ofelia:latest
     depends_on:
