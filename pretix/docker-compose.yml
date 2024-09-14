@@ -61,8 +61,7 @@ services:
   ofelia:
     image: mcuadros/ofelia:latest
     depends_on:
-      pretix:
-        condition: service_started
+      - pretix
     command: daemon --docker
     restart: unless-stopped
     volumes:
