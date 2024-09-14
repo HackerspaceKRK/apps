@@ -20,19 +20,12 @@ services:
       - pretix_backend
     depends_on:
       - database
-  ofelia:
-    image: mcuadros/ofelia:latest
-    command: daemon --docker
+  chadburn:
+    image: premoweb/chadburn:latest
+    command: daemon
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      ofelia.job-local.my-test-job.schedule: "@every 30s"
-      ofelia.job-local.my-test-job.command: "date"
-    depends_on:
-      - pretix
-      - database
-      - redis
   pretix:
     image: pretix/standalone:stable
     environment:
@@ -66,9 +59,9 @@ services:
         traefik.http.routers.pretix.rule: "Host(`bilety.apps.hskrk.pl`)"
         traefik.http.routers.pretix.tls: "true"
         traefik.http.routers.pretix.tls.certresolver: "myresolver"
-        ofelia.enabled: "true"
-        ofelia.job-exec.runperiodic.schedule: "@every 60s"
-        ofelia.job-exec.runperiodic.command: "/usr/local/bin/pretix runperiodic"
+        chadburn.enabled: "true"
+        chadburn.job-exec.runperiodic.schedule: "@every 60s"
+        chadburn.job-exec.runperiodic.command: "/usr/local/bin/pretix runperiodic"
     depends_on:
       - database
 volumes:
