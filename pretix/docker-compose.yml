@@ -55,17 +55,6 @@ services:
         traefik.http.routers.pretix.rule: "Host(`bilety.apps.hskrk.pl`)"
         traefik.http.routers.pretix.tls: "true"
         traefik.http.routers.pretix.tls.certresolver: "myresolver"
-        ofelia.enabled: "true"
-        ofelia.job-exec.datecron.schedule: "@every 30m"
-        ofelia.job-exec.datecron.command: "/usr/local/bin/pretix runperiodic"
-  ofelia:
-    image: mcuadros/ofelia:latest
-    depends_on:
-      - pretix
-    command: daemon --docker
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 volumes:
   data:
   postgres:
