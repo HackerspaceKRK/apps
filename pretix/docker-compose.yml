@@ -26,6 +26,9 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      ofelia.job-local.my-test-job.schedule: "@every 30s"
+      ofelia.job-local.my-test-job.command: "date"
     depends_on:
       - pretix
       - database
