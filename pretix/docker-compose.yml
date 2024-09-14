@@ -22,21 +22,16 @@ services:
       - database
   ofelia:
     image: mcuadros/ofelia:latest
-    depends_on:
-      pretix:
-        condition: service_healthy
-      database:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     command: daemon --docker
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - pretix
+      - database
+      - redis
   pretix:
     image: pretix/standalone:stable
-    depends_on:
-      - database
     environment:
       - PRETIX_PRETIX_INSTANCE_NAME=${PRETIX_PRETIX_INSTANCE_NAME}
       - PRETIX_PRETIX_URL=${PRETIX_PRETIX_URL}
@@ -71,6 +66,8 @@ services:
         ofelia.enabled: "true"
         ofelia.job-exec.runperiodic.schedule: "@every 60s"
         ofelia.job-exec.runperiodic.command: "/usr/local/bin/pretix runperiodic"
+    depends_on:
+      - database
 volumes:
   data:
   postgres:
