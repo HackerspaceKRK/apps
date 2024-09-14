@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   database:
     image: postgres:12-alpine
@@ -23,9 +23,12 @@ services:
   ofelia:
     image: mcuadros/ofelia:latest
     depends_on:
-      - pretix
-      - database
-      - redis
+      pretix:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     command: daemon --docker
     restart: unless-stopped
     volumes:
