@@ -27,28 +27,19 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-
   - job_name: 'prometheus'
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 15s
-
     static_configs:
       - targets: ['localhost:9090']
-
   - job_name: 'cadvisor'
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 15s
-
     static_configs:
       - targets: ['cadvisor:8080']
-
   - job_name: 'node-exporter'
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 15s
-
     static_configs:
       - targets: ['node-exporter:9100']
         labels:
@@ -59,6 +50,12 @@ scrape_configs:
       - targets: ['host.printers.at.hskrk.pl:9100']
         labels:
           device: octoprint-host
+      - targets: ['vpn.hskrk.pl:9100']
+        labels:
+          device: openvpn
+      - targets: ['triss.at.hskrk.pl:9100']
+        labels:
+          device: triss
   - job_name: 'octoprint'
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 15s
