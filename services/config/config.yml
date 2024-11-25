@@ -147,6 +147,11 @@ services:
         target: "_blank" # optional html a tag target attribute
         # type: Ping
         # method: "get"
+      - name: "Flipdot"
+        icon: "fa fa-chess-board"
+        subtitle: "Wyświetl tekst na flipdocie"
+        url: "https://nodered.apps.hskrk.pl/flipdot"
+        target: "_blank"
   - name: "Urządzenia"
     icon: "fas fa-power-off"
     items:
