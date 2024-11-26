@@ -238,4 +238,5 @@ networks:
   system_default:
     external: true
   services-monitoring_default:
-    internal: true
+    external: true
+    attachable: true
