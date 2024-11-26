@@ -238,5 +238,7 @@ networks:
   system_default:
     external: true
   services-monitoring_default:
+    internal: true
+  nodered-data:
     external: true
     attachable: true
