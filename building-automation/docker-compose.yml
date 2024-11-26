@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     networks:
       - system_default
+      - services-monitoring_default
     deploy:
       replicas: 1
       restart_policy:
@@ -106,6 +107,8 @@ volumes:
 
 networks:
   system_default:
+    external: true
+  services-monitoring_default:
     external: true
   minio:
     external: true
