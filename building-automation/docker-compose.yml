@@ -51,48 +51,48 @@ services:
     command:
       - /opt/save-images-script.sh
 
-  frigate:
-    restart: unless-stopped
-    networks:
-      - system_default
-    image: ghcr.io/blakeblackshear/frigate:stable
-    devices:
-      - /dev/dri:/dev/dri
-    environment:
-      - FRIGATE_ELAB_RTSP=${FRIGATE_ELAB_RTSP}
-      - FRIGATE_SOFTROOM_RTSP=${FRIGATE_SOFTROOM_RTSP}
-      - FRIGATE_HARDROOM_OD_DRZWI_RTSP=${FRIGATE_HARDROOM_OD_DRZWI_RTSP}
-      - FRIGATE_HARDROOM_NA_DRZWI_RTSP=${FRIGATE_HARDROOM_NA_DRZWI_RTSP}
-      - FRIGATE_KORYTARZ_RTSP=${FRIGATE_KORYTARZ_RTSP}
-      - FRIGATE_KORYTARZ_WYJSCIE_RTSP=${FRIGATE_KORYTARZ_WYJSCIE_RTSP}
-      - FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP=${FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP}
-      - FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP=${FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP}
-    ports:
-      - target: 8555 # WebRTC
-        published: 8555
-        protocol: tcp
-        mode: host
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - frigate_data:/config
-      - ./frigate_config.yml:/config/config.yml
-      - frigate_recordings:/media/frigate
-      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
-        target: /tmp/cache
-        tmpfs:
-          size: 1000000000
-      - type: tmpfs
-        target: /dev/shm # Frigate requires a lot of SHM, but Swarm does not support it yet, so I present you with a `hack`
-        tmpfs:
-          size: 1000000000
-    deploy:
-      labels:
-        - "traefik.http.services.frigate.loadbalancer.server.port=5000"
-        - "traefik.http.routers.frigate.rule=Host(`frigate.apps.hskrk.pl`)"
-        - "traefik.enable=true"
-        - "traefik.http.routers.frigate.middlewares=authentik@docker"
-        - "traefik.http.routers.frigate.tls=true"
-        - "traefik.http.routers.frigate.tls.certresolver=myresolver"
+  # frigate:
+  #   restart: unless-stopped
+  #   networks:
+  #     - system_default
+  #   image: ghcr.io/blakeblackshear/frigate:stable
+  #   devices:
+  #     - /dev/dri:/dev/dri
+  #   environment:
+  #     - FRIGATE_ELAB_RTSP=${FRIGATE_ELAB_RTSP}
+  #     - FRIGATE_SOFTROOM_RTSP=${FRIGATE_SOFTROOM_RTSP}
+  #     - FRIGATE_HARDROOM_OD_DRZWI_RTSP=${FRIGATE_HARDROOM_OD_DRZWI_RTSP}
+  #     - FRIGATE_HARDROOM_NA_DRZWI_RTSP=${FRIGATE_HARDROOM_NA_DRZWI_RTSP}
+  #     - FRIGATE_KORYTARZ_RTSP=${FRIGATE_KORYTARZ_RTSP}
+  #     - FRIGATE_KORYTARZ_WYJSCIE_RTSP=${FRIGATE_KORYTARZ_WYJSCIE_RTSP}
+  #     - FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP=${FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP}
+  #     - FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP=${FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP}
+  #   ports:
+  #     - target: 8555 # WebRTC
+  #       published: 8555
+  #       protocol: tcp
+  #       mode: host
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - frigate_data:/config
+  #     - ./frigate_config.yml:/config/config.yml
+  #     - frigate_recordings:/media/frigate
+  #     - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+  #       target: /tmp/cache
+  #       tmpfs:
+  #         size: 1000000000
+  #     - type: tmpfs
+  #       target: /dev/shm # Frigate requires a lot of SHM, but Swarm does not support it yet, so I present you with a `hack`
+  #       tmpfs:
+  #         size: 1000000000
+  # deploy:
+  #   labels:
+  #     - "traefik.http.services.frigate.loadbalancer.server.port=5000"
+  #     - "traefik.http.routers.frigate.rule=Host(`frigate.apps.hskrk.pl`)"
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.frigate.middlewares=authentik@docker"
+  #     - "traefik.http.routers.frigate.tls=true"
+  #     - "traefik.http.routers.frigate.tls.certresolver=myresolver"
 
   mqtt:
     image: eclipse-mosquitto
