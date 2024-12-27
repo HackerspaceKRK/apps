@@ -12,6 +12,8 @@ services:
       - postgres:/var/lib/postgresql/data
     networks:
       - pretix_backend
+    deploy:
+      endpoint_mode: dnsrr
   redis:
     image: redis:latest
     ports:
