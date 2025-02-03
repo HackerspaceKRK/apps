@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   traefik:
-    image: traefik:v2.8
+    image: traefik:v2.11
     container_name: traefik
     networks:
       - traefik
