@@ -67,6 +67,8 @@ services:
         - "traefik.http.routers.temp_at.tls=true"
         - "traefik.http.routers.temp_at.tls.certresolver=myresolver"
         - "traefik.http.routers.temp_at.middlewares=authentik@docker"
+    environment:
+      - FRIGATE_URL=http://10.12.20.97:5080
     networks:
       - system_default
   # frigate:
