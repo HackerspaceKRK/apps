@@ -51,6 +51,24 @@ services:
     command:
       - /opt/save-images-script.sh
 
+  temp_at:
+    image: ghcr.io/hackerspacekrk/temp-at:master
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=system_default"
+        - "traefik.http.services.temp_at.loadbalancer.server.port=8080"
+        - "traefik.http.routers.temp_at.rule=Host(`at2.apps.hskrk.pl`)"
+        - "traefik.http.routers.temp_at.tls=true"
+        - "traefik.http.routers.temp_at.tls.certresolver=myresolver"
+        - "traefik.http.routers.temp_at.middlewares=authentik@docker"
+    networks:
+      - system_default
   # frigate:
   #   restart: unless-stopped
   #   networks:
