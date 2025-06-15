@@ -125,7 +125,7 @@ services:
         - "traefik.http.routers.whoami.tls.certresolver=myresolver"
 
   postgresql:
-    image: postgres:12-alpine
+    image: pgautoupgrade/pgautoupgrade:${POSTGRES_TAG:-12-alpine}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
       start_period: 20s
