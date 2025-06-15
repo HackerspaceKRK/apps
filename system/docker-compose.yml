@@ -126,7 +126,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:${POSTGRES_TAG:-12-alpine}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-      start_period: 20s
+      start_period: 2m
       interval: 30s
       retries: 5
       timeout: 5s
