@@ -49,8 +49,6 @@ services:
 
   loki:
     image: grafana/loki:2.6.1
-    secrets:
-      - pretix_metrix_password
     networks:
       - services-monitoring_default
     restart: always
@@ -60,6 +58,8 @@ services:
       - ./loki/config/config.yml:/etc/loki/local-config.yaml
       - loki_data:/data/
   prometheus:
+    secrets:
+      - pretix_metrix_password
     image: prom/prometheus:latest
     volumes:
       - ./prometheus/:/etc/prometheus/
