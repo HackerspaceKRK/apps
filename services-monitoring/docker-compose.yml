@@ -49,6 +49,8 @@ services:
 
   loki:
     image: grafana/loki:2.6.1
+    secrets:
+      - pretix_metrix_password
     networks:
       - services-monitoring_default
     restart: always
@@ -225,6 +227,8 @@ secrets:
   authentik_jwk.json:
     external: true
   nut-upsd-password:
+    external: true
+  pretix_metrix_password:
     external: true
 
 volumes:
