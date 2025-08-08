@@ -59,7 +59,7 @@ services:
       - loki_data:/data/
   prometheus:
     secrets:
-      - pretix_metrix_password
+      - pretix_metrics_password
     image: prom/prometheus:latest
     volumes:
       - ./prometheus/:/etc/prometheus/

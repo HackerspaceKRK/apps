@@ -129,7 +129,7 @@ scrape_configs:
       - targets: ['pretix.hackerspace-krk.pl']
     basic_auth:
       username: hskrk
-      password_file: /run/secrets/pretix_metrix_password
+      password_file: /run/secrets/pretix_metrics_password
   - job_name: 'pretix_business_metrics'
     scheme: https
     # fallback_scrape_protocol: PrometheusText1.0.0
@@ -137,4 +137,4 @@ scrape_configs:
       - targets: ['api.zjazdtechniczny.pl']
     basic_auth:
       username: hskrk
-      password_file: /run/secrets/pretix_metrix_password
+      password_file: /run/secrets/pretix_metrics_password
