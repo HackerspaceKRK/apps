@@ -228,7 +228,7 @@ secrets:
     external: true
   nut-upsd-password:
     external: true
-  pretix_metrix_password:
+  pretix_metrics_password:
     external: true
 
 volumes:
