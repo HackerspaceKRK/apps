@@ -60,7 +60,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.docekr.network=system_default"
+        - "traefik.docker.network=system_default"
         - "traefik.http.services.loki.loadbalancer.server.port=3100"
         - "traefik.http.routers.loki.rule=Host(`loki.apps.hskrk.pl`)"
         - "traefik.http.routers.loki.tls=true"
