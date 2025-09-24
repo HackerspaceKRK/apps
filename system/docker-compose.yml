@@ -125,12 +125,7 @@ services:
   postgresql:
     image: pgautoupgrade/pgautoupgrade:${POSTGRES_TAG:-15-alpine}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-      start_period: 5m
-      start_interval: 5m
-      interval: 30s
-      retries: 5
-      timeout: 10s
+      disable: true
     volumes:
       - database:/var/lib/postgresql/data
     environment:
