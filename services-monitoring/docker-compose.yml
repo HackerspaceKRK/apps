@@ -48,9 +48,16 @@ services:
       - RENDERING_MODE=reusable
 
   loki:
-    image: grafana/loki:2.6.1
+    image: grafana/loki:3.5.5
     networks:
-      - services-monitoring_default
+      services-monitoring_default:
+        aliases:
+          - push.loki
+          - backend.loki
+      system_default:
+        aliases:
+          - query.loki
+          - frontend.loki
     restart: always
     user: "0"
     command: -config.file=/etc/loki/local-config.yaml
@@ -65,7 +72,8 @@ services:
         - "traefik.http.routers.loki.rule=Host(`loki.apps.hskrk.pl`)"
         - "traefik.http.routers.loki.tls=true"
         - "traefik.http.routers.loki.tls.certresolver=myresolver"
-        - "traefik.http.middlewares.loki.ipallowlist.sourcerange=127.0.0.1/32, 10.12.20.9/32"
+        - "traefik.http.routers.loki.middlewares=loki@docker"
+        - "traefik.http.middlewares.loki.ipallowlist.sourcerange=10.12.20.9,10.0.0.0/16,45.66.23.240/29,127.0.0.0/16"
 
   prometheus:
     secrets:
@@ -186,7 +194,7 @@ services:
       retries: 3
 
   promtail:
-    image: grafana/promtail:2.6.1
+    image: grafana/promtail:3.5.5
     networks:
       - services-monitoring_default
     restart: unless-stopped
