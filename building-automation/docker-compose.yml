@@ -38,14 +38,13 @@ services:
         - "traefik.http.routers.temp_at.tls=true"
         - "traefik.http.routers.temp_at.tls.certresolver=myresolver"
     secrets:
-        - at2_mqtt_password
-        - at2_oidc_client_secret
+      - at2_mqtt_password
+      - at2_oidc_client_secret
     volumes:
       - ./at2.yaml:/etc/at2.yaml:ro
       - at2_data:/data
     networks:
       - system_default
-
 
   mqtt:
     image: eclipse-mosquitto
