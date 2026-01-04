@@ -22,35 +22,6 @@ services:
     volumes:
       - nodered_data:/data
 
-  render-images:
-    image: amazon/aws-cli:latest
-    restart: unless-stopped
-    networks:
-      - minio
-    deploy:
-      mode: replicated
-      replicas: 0
-      labels:
-        - "swarm.cronjob.enable=true"
-        - "swarm.cronjob.schedule=*/5 * * * *"
-        - "swarm.cronjob.skip-running=true"
-      restart_policy:
-        condition: none
-    environment:
-      - IMAGES_BUCKET=at-statics
-      - S3_ENDPOINT=http://minio:9000
-    secrets:
-      - source: image_render_s3_credentials
-        target: /root/.aws/credentials
-      - zoneminder_password
-      - zoneminder_login
-    volumes:
-      - ./save-images-script.sh:/opt/save-images-script.sh
-    entrypoint:
-      - /bin/bash
-    command:
-      - /opt/save-images-script.sh
-
   temp_at:
     image: ghcr.io/hackerspacekrk/temp-at:master
     restart: unless-stopped
@@ -66,53 +37,14 @@ services:
         - "traefik.http.routers.temp_at.rule=Host(`at2.apps.hskrk.pl`)"
         - "traefik.http.routers.temp_at.tls=true"
         - "traefik.http.routers.temp_at.tls.certresolver=myresolver"
-        - "traefik.http.routers.temp_at.middlewares=authentik@docker"
-    environment:
-      - FRIGATE_URL=http://10.12.20.5:5080
+    secrets:
+      - at2_mqtt_password
+      - at2_oidc_client_secret
+    volumes:
+      - ./at2.yaml:/etc/at2.yaml:ro
+      - at2_data:/data
     networks:
       - system_default
-  # frigate:
-  #   restart: unless-stopped
-  #   networks:
-  #     - system_default
-  #   image: ghcr.io/blakeblackshear/frigate:stable
-  #   devices:
-  #     - /dev/dri:/dev/dri
-  #   environment:
-  #     - FRIGATE_ELAB_RTSP=${FRIGATE_ELAB_RTSP}
-  #     - FRIGATE_SOFTROOM_RTSP=${FRIGATE_SOFTROOM_RTSP}
-  #     - FRIGATE_HARDROOM_OD_DRZWI_RTSP=${FRIGATE_HARDROOM_OD_DRZWI_RTSP}
-  #     - FRIGATE_HARDROOM_NA_DRZWI_RTSP=${FRIGATE_HARDROOM_NA_DRZWI_RTSP}
-  #     - FRIGATE_KORYTARZ_RTSP=${FRIGATE_KORYTARZ_RTSP}
-  #     - FRIGATE_KORYTARZ_WYJSCIE_RTSP=${FRIGATE_KORYTARZ_WYJSCIE_RTSP}
-  #     - FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP=${FRIGATE_MAGAZYNEK_OD_DRZWI_RTSP}
-  #     - FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP=${FRIGATE_MAGAZYNEK_NA_DRZWI_HTTP}
-  #   ports:
-  #     - target: 8555 # WebRTC
-  #       published: 8555
-  #       protocol: tcp
-  #       mode: host
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - frigate_data:/config
-  #     - ./frigate_config.yml:/config/config.yml
-  #     - frigate_recordings:/media/frigate
-  #     - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
-  #       target: /tmp/cache
-  #       tmpfs:
-  #         size: 1000000000
-  #     - type: tmpfs
-  #       target: /dev/shm # Frigate requires a lot of SHM, but Swarm does not support it yet, so I present you with a `hack`
-  #       tmpfs:
-  #         size: 1000000000
-  # deploy:
-  #   labels:
-  #     - "traefik.http.services.frigate.loadbalancer.server.port=5000"
-  #     - "traefik.http.routers.frigate.rule=Host(`frigate.apps.hskrk.pl`)"
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.frigate.middlewares=authentik@docker"
-  #     - "traefik.http.routers.frigate.tls=true"
-  #     - "traefik.http.routers.frigate.tls.certresolver=myresolver"
 
   mqtt:
     image: eclipse-mosquitto
@@ -140,4 +72,8 @@ secrets:
   zoneminder_password:
     external: true
   zoneminder_login:
+    external: true
+  at2_mqtt_password:
+    external: true
+  at2_oidc_client_secret:
     external: true

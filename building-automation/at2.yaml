@@ -1,0 +1,234 @@
+frigate:
+  url: http://10.12.20.5:5080/
+mqtt:
+  broker: 10.12.20.5:1883
+  username: at2
+  password_file: /run/secrets/at2_mqtt_password
+oidc:
+  client_id: 121tWeiCPOIEBaBX5d4FVgDQ9rb4U14OwKQhrbaD
+  client_secret_file: /run/secrets/at2_oidc_client_secret
+  issuer_url: https://auth.apps.hskrk.pl/application/o/at2/
+database:
+  path: /data/data.db
+web:
+  listen_address: ":8080"
+  public_url: "https://at2.apps.hskrk.pl"
+rooms:
+  - id: 681d6e64-6a6b-4cae-b393-d265a051a0b0
+    localized_name:
+      pl: Audytorium
+      en: Auditorium
+    entities:
+      - id: frigate/person/audytorium
+        representation: presence
+      - id: snapshot/audytorium
+        representation: camera_snapshot
+      - id: environ/audytorium/temperature
+        representation: temperature
+      - id: environ/audytorium/humidity
+        representation: humidity
+      - id: lights/audytorium/relay_left
+        representation: light
+        localized_name:
+          pl: Małe światło
+          en: Small light
+      - id: lights/audytorium/relay_right
+        representation: light
+        localized_name:
+          pl: Duże światło
+          en: Large light
+      - id: esphome/pm-prawy/sensor/audytorium_i_anc
+  - id: 3ac4b8f1-a88e-4fcf-9443-7d161717968f
+    localized_name:
+      pl: Korytarz
+      en: Corridor
+    entities:
+      - id: frigate/person/korytarz_na_wejscie
+        representation: presence
+      - id: snapshot/korytarz_na_wejscie
+        representation: camera_snapshot
+      - id: environ/korytarz/temperature
+        representation: temperature
+      - id: environ/korytarz/humidity
+        representation: humidity
+      - id: lights/corridor/down/relay_left
+        representation: light
+      - id: lights/kuchnia/relay
+        representation: light
+      - id: esphome/pm-prawy/sensor/lazienka__korytarz__klatka
+      - id: pm-prawy/sensor/kuchnia/state
+  - id: a6cd3850-91aa-4719-9824-212075c75e45
+    localized_name:
+      pl: Łazienka
+      en: Bathroom
+    entities:
+      - id: lights/bathroom
+        representation: light
+      - id: lights/bathroom/cabins/relay_left
+        representation: light
+      - id: lights/bathroom/cabins/relay_right
+        representation: light
+  - id: 7314b325-f673-4a67-a6e4-4ce1d9325cf6
+    localized_name:
+      pl: Elelab
+      en: Elelab
+    entities:
+      - id: frigate/person/elelab_na_drzwi
+        representation: presence
+      - id: snapshot/elelab_na_drzwi
+        representation: camera_snapshot
+      - id: frigate/person/elelab_na_drukarki
+        representation: presence
+      - id: snapshot/elelab_na_drukarki
+        representation: camera_snapshot
+      - id: lights/elelab/l1
+        representation: light
+      - id: lights/elelab/l2
+        representation: light
+      - id: environ/elelab/temperature
+        representation: temperature
+      - id: environ/elelab/humidity
+        representation: humidity
+      - id: lights/elelab_luk_prawy/relay
+        representation: light
+      - id: esphome/pm-prawy/sensor/elelab
+
+  - id: c0bc933f-7321-4437-9a09-7f2edfebd23d
+    localized_name:
+      pl: CNC
+      en: CNC
+    entities:
+      - id: frigate/person/cnc_na_drukarki
+        representation: presence
+      - id: snapshot/cnc_na_drukarki
+        representation: camera_snapshot
+      - id: lights/cnc/l1
+        representation: light
+      - id: lights/cnc/l2
+        representation: light
+      - id: environ/cnc/temperature
+        representation: temperature
+      - id: environ/cnc/humidity
+        representation: humidity
+      - id: lights/mini_korytarzyk/relay
+        representation: light
+      - id: fan/cnc/laser/relay
+        representation: fan
+      - id: esphome/pm-prawy/sensor/cnc_laserownia
+  - id: 699741b2-298a-4c4a-a017-3d61ec1e321c
+    localized_name:
+      pl: Maszynownia
+      en: Machine Room
+    entities:
+      - id: frigate/person/maszynownia_na_tokarke
+        representation: presence
+      - id: snapshot/maszynownia_na_tokarke
+        representation: camera_snapshot
+      - id: lights/maszynownia/relay_left
+        representation: light
+      - id: lights/maszynownia/relay_right
+        representation: light
+      - id: environ/maszynownia/temperature
+        representation: temperature
+      - id: environ/maszynownia/humidity
+        representation: humidity
+      - id: lights/maszynownia/na_zewnatrz
+        representation: light
+      - id: esphome/pm-lewy/sensor/maszynownia
+  - id: 426acc7e-e544-4a2e-ac17-5fbb16d71027
+    localized_name:
+      pl: Kuźnia
+      en: Forge Room
+    entities:
+      - id: frigate/person/kuznia_na_okno
+        representation: presence
+      - id: snapshot/kuznia_na_okno
+        representation: camera_snapshot
+      - id: frigate/person/hardroom_od_okna
+        representation: presence
+      - id: snapshot/hardroom_od_okna
+        representation: camera_snapshot
+      - id: lights/kuznia_ostrzegawcze/relay
+        representation: light
+        prohibit_control: true
+      - id: lights/kuznia/relay_left
+        representation: light
+      - id: lights/kuznia/relay_right
+        representation: light
+      - id: environ/kuznia/temperature
+        representation: temperature
+      - id: environ/kuznia/humidity
+        representation: humidity
+      - id: fan/kuznia/relay
+        representation: fan
+      - id: esphome/pm-lewy/sensor/kuznia
+        negate_value: true
+  - id: 3af90d15-dbd3-405c-aa04-447829856ca1
+    localized_name:
+      pl: Arts & Crafts
+      en: Arts & Crafts
+    entities:
+      - id: frigate/person/anc_na_drzwi
+        representation: presence
+      - id: snapshot/anc_na_drzwi
+        representation: camera_snapshot
+      - id: lights/artsandcrafts/l1
+        representation: light
+      - id: lights/artsandcrafts/l2
+        representation: light
+      - id: environ/artsandcrafts/temperature
+        representation: temperature
+      - id: environ/artsandcrafts/humidity
+        representation: humidity
+      - id: fan/artsandcrafts/relay
+        representation: fan
+      - id: esphome/pm-prawy/sensor/audytorium_i_anc
+  - id: 528c5e8c-660f-4544-be0b-1c2c6a007c89
+    localized_name:
+      pl: Magazynek
+      en: Storage
+    entities:
+      - id: environ/magazynek/temperature
+        representation: temperature
+      - id: environ/magazynek/humidity
+        representation: humidity
+      - id: lights/magazynek/relay_left
+        representation: light
+      - id: lights/magazynek/relay_right
+        representation: fan
+      - id: wtyczka_osuszacz_magazynek
+        representation: plug
+      - id: esphome/pm-prawy/sensor/magazyn__podworko
+  - id: 8706711b-6465-45d8-9e7e-a1b4ed02b4c3
+    localized_name:
+      pl: Wejście
+      en: Entrance
+    entities:
+      - id: frigate/person/klatka_schodowa
+        representation: presence
+      - id: snapshot/klatka_schodowa
+        representation: camera_snapshot
+      # - id: frigate/person/domofon
+      #   representation: presence
+      - id: snapshot/domofon
+        representation: camera_snapshot
+      - id: lights/corridor/down/relay_right
+        representation: light
+      - id: lights/corridor/up/relay
+        representation: light
+      - id: lights/datacenter/relay
+        representation: light
+# SpaceAPI configuration
+spaceapi:
+  space: "Hackerspace Kraków"
+  logo: "https://hackerspace-krk.pl/images/hackerspace_logo.svg"
+  url: "https://hackerspace-krk.pl/"
+  location:
+    address: "ul. Limanowskiego Bolesława 46/LU1"
+    lat: 50.0443032
+    lon: 19.9563097
+    timezone: "Europe/Warsaw"
+  contact:
+    email: "info@hackerspace-krk.pl"
+    irc: "irc://hskrk@libera.chat"
+    matrix: "#hskrk:hackerspace.pl"
