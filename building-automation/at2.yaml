@@ -1,3 +1,11 @@
+branding:
+  page_title: "Status Hackerspace Kraków"
+  logo_url: "https://hackerspace-krk.pl/images/hackerspace_logo.svg"
+  logo_dark_url: "https://static.apps.hskrk.pl/static-archive/logo_b.svg"
+  logo_alt: "Logo Hackerspace Kraków"
+  logo_link_url: "https://hackerspace-krk.pl/"
+  footer_name: "Hackerspace Kraków"
+  footer_name_link_url: "https://hackerspace-krk.pl/"
 frigate:
   url: http://10.12.20.5:5080/
 mqtt:
