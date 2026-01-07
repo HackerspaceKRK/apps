@@ -16,6 +16,10 @@ oidc:
   client_id: 121tWeiCPOIEBaBX5d4FVgDQ9rb4U14OwKQhrbaD
   client_secret_file: /run/secrets/at2_oidc_client_secret
   issuer_url: https://auth.apps.hskrk.pl/application/o/at2/
+  extra_scopes:
+    - hskrk_membershipExpirationDate
+    - offline_access # Provides refresh token
+  membership_expiration_claim: membershipExpirationDate
 database:
   path: /data/data.db
 web:
