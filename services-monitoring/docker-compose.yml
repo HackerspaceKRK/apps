@@ -48,7 +48,7 @@ services:
       - RENDERING_MODE=reusable
 
   loki:
-    image: grafana/loki:3.5.5
+    image: grafana/loki:3.6.3
     networks:
       services-monitoring_default:
         aliases:
@@ -171,7 +171,7 @@ services:
         - "traefik.http.routers.snmp-exporter.middlewares=authentik@docker"
 
   backblaze-monitoring:
-    image: docker.io/molu8bits/s3bucket_exporter:0.3
+    image: docker.io/molu8bits/s3bucket_exporter:1.0.2
     restart: always
     networks:
       - services-monitoring_default
@@ -194,7 +194,7 @@ services:
       retries: 3
 
   promtail:
-    image: grafana/promtail:3.5.5
+    image: grafana/promtail:3.6.3
     networks:
       - services-monitoring_default
     restart: unless-stopped
