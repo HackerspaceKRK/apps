@@ -6,6 +6,7 @@ branding:
   logo_link_url: "https://hackerspace-krk.pl/"
   footer_name: "Hackerspace Kraków"
   footer_name_link_url: "https://hackerspace-krk.pl/"
+  favicon_url: https://hackerspace-krk.pl/images/favicon.png
 frigate:
   url: http://10.12.20.5:5080/
 mqtt:
@@ -17,9 +18,9 @@ oidc:
   client_secret_file: /run/secrets/at2_oidc_client_secret
   issuer_url: https://auth.apps.hskrk.pl/application/o/at2/
   extra_scopes:
-    - hskrk_membershipExpirationDate
+    - hskrk_membershipExpirationTimestamp
     - offline_access # Provides refresh token
-  membership_expiration_claim: membershipExpirationDate
+  membership_expiration_timestamp_claim: membershipExpirationTimestamp
 database:
   path: /data/data.db
 web:
@@ -65,8 +66,14 @@ rooms:
         representation: humidity
       - id: lights/corridor/down/relay_left
         representation: light
+        localized_name:
+          pl: Światło w korytarzu
+          en: Corridor light
       - id: lights/kuchnia/relay
         representation: light
+        localized_name:
+          pl: Światło w kuchni
+          en: Kitchen light
       - id: esphome/pm-prawy/sensor/lazienka__korytarz__klatka
       - id: pm-prawy/sensor/kuchnia/state
   - id: a6cd3850-91aa-4719-9824-212075c75e45
@@ -76,10 +83,19 @@ rooms:
     entities:
       - id: lights/bathroom
         representation: light
+        localized_name:
+          pl: Światło w łazience
+          en: Bathroom light
       - id: lights/bathroom/cabins/relay_left
         representation: light
+        localized_name:
+          pl: Światło w lewej kabinie
+          en: Left cabin light
       - id: lights/bathroom/cabins/relay_right
         representation: light
+        localized_name:
+          pl: Światło w prawej kabinie
+          en: Right cabin light
   - id: 7314b325-f673-4a67-a6e4-4ce1d9325cf6
     localized_name:
       pl: Elelab
@@ -95,15 +111,28 @@ rooms:
         representation: camera_snapshot
       - id: lights/elelab/l1
         representation: light
+        localized_name:
+          pl: Duże światło
+          en: Large light
       - id: lights/elelab/l2
         representation: light
+        localized_name:
+          pl: Małe światło
+          en: Small light
       - id: environ/elelab/temperature
         representation: temperature
       - id: environ/elelab/humidity
         representation: humidity
       - id: lights/elelab_luk_prawy/relay
         representation: light
+        localized_name:
+          pl: Światło nad komputerem
+          en: Light above the computer
       - id: esphome/pm-prawy/sensor/elelab
+      - id: environ/elelab/okno/contact
+        localized_name:
+          pl: Okno w elelabie
+          en: Elelab window
 
   - id: c0bc933f-7321-4437-9a09-7f2edfebd23d
     localized_name:
@@ -116,17 +145,37 @@ rooms:
         representation: camera_snapshot
       - id: lights/cnc/l1
         representation: light
+        localized_name:
+          pl: Małe światło
+          en: Small light
       - id: lights/cnc/l2
         representation: light
+        localized_name:
+          pl: Duże światło
+          en: Large light
       - id: environ/cnc/temperature
         representation: temperature
       - id: environ/cnc/humidity
         representation: humidity
       - id: lights/mini_korytarzyk/relay
         representation: light
+        localized_name:
+          pl: Światło w mini korytarzu
+          en: Small corridor light
       - id: fan/cnc/laser/relay
         representation: fan
+        localized_name:
+          pl: Wyciąg z lasera
+          en: Laser fume extraction fan
       - id: esphome/pm-prawy/sensor/cnc_laserownia
+      - id: environ/czujnik_czadu_maszynownia/co
+        localized_name:
+          pl: Stężenie tlenku węgla
+          en: Carbon monoxide concentration
+      - id: environ/czujnik_czadu_maszynownia/gas
+        localized_name:
+          pl: Stężenie gazu ziemnego
+          en: Natural gas concentration
   - id: 699741b2-298a-4c4a-a017-3d61ec1e321c
     localized_name:
       pl: Maszynownia
@@ -137,15 +186,24 @@ rooms:
       - id: snapshot/maszynownia_na_tokarke
         representation: camera_snapshot
       - id: lights/maszynownia/relay_left
+        localized_name:
+          pl: Małe światło
+          en: Small light
         representation: light
       - id: lights/maszynownia/relay_right
         representation: light
+        localized_name:
+          pl: Duże światło
+          en: Large light
       - id: environ/maszynownia/temperature
         representation: temperature
       - id: environ/maszynownia/humidity
         representation: humidity
       - id: lights/maszynownia/na_zewnatrz
         representation: light
+        localized_name:
+          pl: Światło na zewnątrz
+          en: Outdoor light
       - id: esphome/pm-lewy/sensor/maszynownia
   - id: 426acc7e-e544-4a2e-ac17-5fbb16d71027
     localized_name:
@@ -163,16 +221,28 @@ rooms:
       - id: lights/kuznia_ostrzegawcze/relay
         representation: light
         prohibit_control: true
+        localized_name:
+          pl: Światło ostrzegawcze
+          en: Warning light
       - id: lights/kuznia/relay_left
         representation: light
+        localized_name:
+          pl: Małe światło
+          en: Small light
       - id: lights/kuznia/relay_right
         representation: light
+        localized_name:
+          pl: Duże światło
+          en: Large light
       - id: environ/kuznia/temperature
         representation: temperature
       - id: environ/kuznia/humidity
         representation: humidity
       - id: fan/kuznia/relay
         representation: fan
+        localized_name:
+          pl: Wyciąg z kuźni
+          en: Forge room extraction fan
       - id: esphome/pm-lewy/sensor/kuznia
         negate_value: true
   - id: 3af90d15-dbd3-405c-aa04-447829856ca1
@@ -186,15 +256,28 @@ rooms:
         representation: camera_snapshot
       - id: lights/artsandcrafts/l1
         representation: light
+        localized_name:
+          pl: Światło w Arts & Crafts 1
+          en: Arts & Crafts light 1
       - id: lights/artsandcrafts/l2
         representation: light
+        localized_name:
+          pl: Światło w Arts & Crafts 2
+          en: Arts & Crafts light 2
       - id: environ/artsandcrafts/temperature
         representation: temperature
       - id: environ/artsandcrafts/humidity
         representation: humidity
       - id: fan/artsandcrafts/relay
         representation: fan
+        localized_name:
+          pl: Wyciąg z Arts & Crafts
+          en: Arts & Crafts extraction fan
       - id: esphome/pm-prawy/sensor/audytorium_i_anc
+      - id: environ/artsandcrafts/okno/contact
+        localized_name:
+          pl: Okno w Arts & Crafts
+          en: Arts & Crafts window
   - id: 528c5e8c-660f-4544-be0b-1c2c6a007c89
     localized_name:
       pl: Magazynek
@@ -206,8 +289,14 @@ rooms:
         representation: humidity
       - id: lights/magazynek/relay_left
         representation: light
+        localized_name:
+          pl: Światło w magazynku
+          en: Storage room light
       - id: lights/magazynek/relay_right
         representation: fan
+        localized_name:
+          pl: Wentylacja w magazynku
+          en: Storage room fan
       - id: wtyczka_osuszacz_magazynek
         representation: plug
       - id: esphome/pm-prawy/sensor/magazyn__podworko
@@ -226,14 +315,22 @@ rooms:
         representation: camera_snapshot
       - id: lights/corridor/down/relay_right
         representation: light
+        localized_name:
+          pl: Światło na dole schodów
+          en: Lower stairs light
       - id: lights/corridor/up/relay
         representation: light
+        localized_name:
+          pl: Światło na górze schodów
+          en: Upper stairs light
       - id: lights/datacenter/relay
         representation: light
+        localized_name:
+          pl: Światło datacenter (pod schodami)
+          en: Datacenter light (under stairs)
 # SpaceAPI configuration
 spaceapi:
   space: "Hackerspace Kraków"
-  logo: "https://hackerspace-krk.pl/images/hackerspace_logo.svg"
   url: "https://hackerspace-krk.pl/"
   location:
     address: "ul. Limanowskiego Bolesława 46/LU1"
