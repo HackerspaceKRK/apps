@@ -6,6 +6,7 @@ branding:
   logo_link_url: "https://hackerspace-krk.pl/"
   footer_name: "Hackerspace Kraków"
   footer_name_link_url: "https://hackerspace-krk.pl/"
+  favicon_url: https://hackerspace-krk.pl/images/favicon.png
 frigate:
   url: http://10.12.20.5:5080/
 mqtt:
