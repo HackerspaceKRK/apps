@@ -17,9 +17,9 @@ oidc:
   client_secret_file: /run/secrets/at2_oidc_client_secret
   issuer_url: https://auth.apps.hskrk.pl/application/o/at2/
   extra_scopes:
-    - hskrk_membershipExpirationDate
+    - hskrk_membershipExpirationTimestamp
     - offline_access # Provides refresh token
-  membership_expiration_claim: membershipExpirationDate
+  membership_expiration_timestamp_claim: membershipExpirationTimestamp
 database:
   path: /data/data.db
 web:
