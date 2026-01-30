@@ -74,6 +74,10 @@ scrape_configs:
           - 10.12.5.2
         labels:
           device: alacer
+      - targets:
+          - 10.12.20.1
+        labels:
+          device: lalacer
     metrics_path: /snmp
     params:
       auth: [public_v2]
